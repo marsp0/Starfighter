@@ -16,11 +16,12 @@ class Enemy : public sf::RectangleShape {
 
         void TakeDamage(int l_damage);
 
-        int m_health;
+        bool m_alive;
 
     private:
         
         sf::RectangleShape m_body;
         Healthbar m_healthBar;
+        
         
 };

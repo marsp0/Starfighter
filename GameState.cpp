@@ -24,11 +24,9 @@ void GameState::Update(float timestep) {
             if ( ( (m_plane.m_bullets[i].getGlobalBounds().left > m_enemies[j].getPosition().x) and (m_enemies[j].getPosition().x + m_enemies[j].getSize().x > m_plane.m_bullets[i].getGlobalBounds().left) ) or \
                 ((m_plane.m_bullets[i].getGlobalBounds().left + m_plane.m_bullets[i].getGlobalBounds().width > m_enemies[j].getPosition().x) and ((m_enemies[j].getPosition().x + m_enemies[j].getSize().x) > m_plane.m_bullets[i].getGlobalBounds().left + m_plane.m_bullets[i].getGlobalBounds().width))) {
                     if ((m_enemies[j].getPosition().y < m_plane.m_bullets[i].getGlobalBounds().top) and (m_enemies[j].getPosition().y+m_enemies[j].getSize().y > m_plane.m_bullets[i].getGlobalBounds().top)){
-                        int temp{m_enemies[j].m_health - m_plane.m_bullets[i].m_damage};
-                        if (temp <= 0) {
+                        m_enemies[j].TakeDamage(m_plane.m_bullets[i].m_damage);
+                        if (!m_enemies[j].m_alive) {
                             m_enemies.erase(m_enemies.begin()+j);
-                        } else {
-                            m_enemies[j].m_health = temp;
                         }
                         m_plane.m_bullets.erase(m_plane.m_bullets.begin()+i);
                     }

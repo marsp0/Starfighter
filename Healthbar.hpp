@@ -10,8 +10,11 @@ class Healthbar {
         void Render(sf::RenderWindow& l_window);
 
         void setPosition(sf::Vector2f l_position);
-        void TakeDamage(int l_damage);
+        bool TakeDamage(int l_damage);
 
+        // NOTE : check pros and cons of initializing vars in different ways.
+        static constexpr float HP_WIDTH{50.f};
+        static constexpr float HP_HEIGHT{7.f};
 
     private:
         

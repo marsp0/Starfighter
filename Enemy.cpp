@@ -36,5 +36,5 @@ sf::Vector2f Enemy::getSize() {
 }
 
 void Enemy::TakeDamage(int l_damage){
-    m_healthBar.TakeDamage(l_damage);
+    m_alive = m_healthBar.TakeDamage(l_damage);
 }
