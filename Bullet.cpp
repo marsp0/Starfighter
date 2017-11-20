@@ -11,6 +11,7 @@ Bullet::Bullet(sf::Vector2f l_position) : sf::CircleShape(6) {
     sf::CircleShape::setOutlineColor(sf::Color::Black);
     sf::CircleShape::setOutlineThickness(2.f);
     m_spawnTime = std::chrono::system_clock::now();
+    m_damage = 50;
 }
 
 Bullet::~Bullet() {

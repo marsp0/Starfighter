@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "Plane.hpp"
+#include "Enemy.hpp"
+
 class GameState {
 public:
     GameState();
@@ -12,5 +14,5 @@ public:
     void HandleInput();
 private:
     Plane m_plane;
-    std::vector<sf::RectangleShape> m_enemies;
+    std::vector<Enemy> m_enemies;
 };
