@@ -12,4 +12,5 @@ public:
     void HandleInput();
 private:
     Plane m_plane;
+    std::vector<sf::RectangleShape> m_enemies;
 };

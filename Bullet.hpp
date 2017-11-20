@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <chrono>
 
 class Bullet : public sf::CircleShape {
 public:
@@ -9,12 +10,14 @@ public:
 
     bool Update(float timestep);
 
-    void getPosition();
+    sf::Vector2f getPosition();
 
     float Top();
     float Bottom();
     float Left();
     float Right();
+    std::chrono::time_point<std::chrono::system_clock> GetSpawnTime();
 private:
     float m_velocity;
+    std::chrono::time_point<std::chrono::system_clock> m_spawnTime;
 };
