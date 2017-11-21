@@ -28,5 +28,4 @@ class Scoreboard {
         sf::Font m_font;
 
         // buffs
-
 };

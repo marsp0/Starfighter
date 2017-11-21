@@ -3,8 +3,8 @@
 #include <iostream>
 
 MenuState::MenuState() : m_newGame(sf::Vector2f(200.f,100.f), sf::Vector2f(300.f,120.f), sf::String("New Game")),
-                        m_highScores(sf::Vector2f(200.f,100.f), sf::Vector2f(300.f,250.f), sf::String("High Scores")),
-                        m_quitGame(sf::Vector2f(200.f,100.f), sf::Vector2f(300.f,380.f), sf::String("Quit Game"))
+                         m_highScores(sf::Vector2f(200.f,100.f), sf::Vector2f(300.f,250.f), sf::String("High Scores")),
+                         m_quitGame(sf::Vector2f(200.f,100.f), sf::Vector2f(300.f,380.f), sf::String("Quit Game"))
 {
     m_background.setPosition(sf::Vector2f(270.f,90.f));
     m_background.setFillColor(sf::Color::Blue);
