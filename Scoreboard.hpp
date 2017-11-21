@@ -17,6 +17,8 @@ class Scoreboard {
         void AddScore(int l_score);
         void RemoveScore(int l_score);
 
+        void Restart();
+
     private:
         
         int m_lives;

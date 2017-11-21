@@ -164,3 +164,9 @@ sf::Vector2f Plane::getBulletSpawn() {
     float y {(float)(m_rifle.getPosition().y - m_rifle.getSize().y * sin((90-m_rifle.getRotation())*3.1428/180))};
     return sf::Vector2f(x , y);
 }
+
+void Plane::Restart(){
+    m_bullets.clear();
+    m_rifle.setPosition(400.f, 400.f);
+    sf::CircleShape::setPosition(400.f,400.f);
+}

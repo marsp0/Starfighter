@@ -14,8 +14,10 @@ public:
     void Render();
     void Run();
     void RestartClock();
-
+    void Restart();
     sf::RenderWindow* GetWindow();
+
+    void ChangeState();
 private:
     GameState m_gameState;
     MenuState m_menuState;

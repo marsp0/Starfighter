@@ -22,6 +22,7 @@ class Plane : public sf::CircleShape {
         void Move(float timestep);
         void Shoot(float timestep);
         float getRotationAngle(sf::Vector2i l_mousePosition);
+        void Restart();
         sf::Vector2f getBulletSpawn();
 
     public:

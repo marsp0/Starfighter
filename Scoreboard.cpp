@@ -39,3 +39,8 @@ void Scoreboard::AddScore(int l_score) {
 void Scoreboard::RemoveScore(int l_score) {
     m_score -= l_score;
 }
+
+void Scoreboard::Restart(){
+    m_score = 0;
+    m_lives = 3;
+}

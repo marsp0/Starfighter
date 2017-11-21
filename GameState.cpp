@@ -55,3 +55,13 @@ void GameState::Render(sf::RenderWindow& l_window) {
 void GameState::HandleInput(){
 
 }
+
+void GameState::Restart() {
+    m_enemies.clear();
+    for (int i=0; i < 5; i++){
+        Enemy temp(sf::Vector2f(50.f,50.f));
+        m_enemies.push_back(temp);
+    }
+    m_plane.Restart();
+    m_scoreboard.Restart();
+}

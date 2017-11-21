@@ -1,10 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include "Game.hpp"
+#include <iostream>
 
 Game::Game() : m_gameState(), m_menuState(), m_window(sf::VideoMode(800,600,32), "StarShooter", sf::Style::Titlebar | sf::Style::Close){
-    m_clock.restart();
-    m_elapsed = 0.0f;
-    m_window.setFramerateLimit(90);
+    Restart();
 }
 
 Game::~Game() {
@@ -13,12 +12,24 @@ Game::~Game() {
 
 void Game::Update(float timestep, sf::RenderWindow& l_window) {
     // NOTE : REMOVE THE WINDOW INSTANCE FROM THE UPDATE METHOD
-    m_gameState.Update(timestep, l_window);
+    m_currentState->Update(timestep, l_window);
+    if (m_currentState == &m_menuState) {
+        if (m_menuState.m_buttonPressed[0]) {
+            Restart();
+            m_menuState.m_buttonPressed[0] = false;
+        } else if (m_menuState.m_buttonPressed[1]) {
+            std::cout << "High scores" << std::endl;
+            m_menuState.m_buttonPressed[1] = false;
+        } else if (m_menuState.m_buttonPressed[2]) {
+            m_window.close();
+            m_menuState.m_buttonPressed[2] = false;
+        }
+    }
 }
 
 void Game::Render() {
     m_window.clear(sf::Color(sf::Color(150,207,234)));
-    m_gameState.Render(*GetWindow());
+    m_currentState->Render(*GetWindow());
     m_window.display();
 }
 
@@ -27,6 +38,17 @@ void Game::HandleInput() {
     while(m_window.pollEvent(event)) {
         if (sf::Event::EventType::Closed == event.type) {
             m_window.close();
+        } else if (event.type == sf::Event::EventType::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Key::Escape){
+                ChangeState();
+            }
+        } else if (event.type == sf::Event::MouseButtonPressed) {
+            if (event.key.code == sf::Mouse::Button::Left){
+                if (m_currentState == &m_menuState) {
+                    m_menuState.m_pressed = true;
+                    m_menuState.m_mousePosition = sf::Mouse::getPosition(*GetWindow());
+                }
+            }
         }
     }
 }
@@ -51,4 +73,20 @@ void Game::RestartClock() {
 
 sf::RenderWindow* Game::GetWindow() {
     return &m_window;
+}
+
+void Game::ChangeState(){
+    if (m_currentState == &m_gameState) {
+        m_currentState = &m_menuState;
+    }else {
+        m_currentState = &m_gameState;
+    }
+}
+
+void Game::Restart() {
+    m_clock.restart();
+    m_elapsed = 0.0f;
+    m_window.setFramerateLimit(90);
+    m_currentState = &m_gameState;
+    m_gameState.Restart();
 }
