@@ -4,7 +4,7 @@
 #include <chrono>
 
 
-Bullet::Bullet(sf::Vector2f l_position) : sf::CircleShape(6) {
+Bullet::Bullet(sf::Vector2f l_position, float x_direction, float y_direction) : sf::CircleShape(6), m_direction(x_direction,y_direction) {
     m_velocity = 450.f;
     sf::CircleShape::setPosition(l_position);
     sf::CircleShape::setOrigin(6,6);
@@ -19,8 +19,8 @@ Bullet::~Bullet() {
 }
 
 bool Bullet::Update(float timestep) {
-    if (sf::CircleShape::getPosition().y - m_velocity*timestep > 0){
-        sf::CircleShape::move(0, -m_velocity*timestep);
+    if ((sf::CircleShape::getPosition().y - m_velocity*timestep > 0) and (sf::CircleShape::getPosition().x - m_velocity*timestep > 0)){
+        sf::CircleShape::move(m_direction.x*m_velocity*timestep, m_direction.y*m_velocity*timestep);
         return true;
     } else {
         return false;

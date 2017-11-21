@@ -9,7 +9,7 @@ public:
     ~Game();
 
     void HandleInput();
-    void Update(float timestep);
+    void Update(float timestep, sf::RenderWindow& l_window);
     void Render();
     void Run();
     void RestartClock();

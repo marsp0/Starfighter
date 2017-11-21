@@ -5,7 +5,7 @@
 
 class Bullet : public sf::CircleShape {
 public:
-    Bullet(sf::Vector2f l_position);
+    Bullet(sf::Vector2f l_position, float x_direction, float y_direction);
     ~Bullet();
 
     bool Update(float timestep);
@@ -23,5 +23,6 @@ public:
 private:
     float m_velocity;
     std::chrono::time_point<std::chrono::system_clock> m_spawnTime;
+    sf::Vector2f m_direction;
     
 };

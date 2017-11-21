@@ -11,8 +11,9 @@ Game::~Game() {
 
 }
 
-void Game::Update(float timestep) {
-    m_gameState.Update(timestep);
+void Game::Update(float timestep, sf::RenderWindow& l_window) {
+    // NOTE : REMOVE THE WINDOW INSTANCE FROM THE UPDATE METHOD
+    m_gameState.Update(timestep, l_window);
 }
 
 void Game::Render() {
@@ -36,7 +37,7 @@ void Game::Run() {
 
         HandleInput();
         while (m_elapsed >= timestep) {
-            Update(timestep);
+            Update(timestep, *GetWindow());
             m_elapsed -= timestep;
         }
         Render();

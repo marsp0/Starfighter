@@ -14,9 +14,6 @@ Enemy::Enemy(sf::Vector2f l_size) : m_body(l_size), m_healthBar(sf::Vector2f(-50
     m_healthBar.setPosition(m_body.getPosition());
 }
 
-Enemy::~Enemy() {
-
-}
 
 void Enemy::Update(float timestep){
 

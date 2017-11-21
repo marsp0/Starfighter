@@ -15,8 +15,8 @@ GameState::~GameState() {
 
 }
 
-void GameState::Update(float timestep) {
-    m_plane.Update(timestep);
+void GameState::Update(float timestep, sf::RenderWindow& l_window) {
+    m_plane.Update(timestep, l_window);
     // NOTE :Move the collision detection to the enemy object
     for (int i = 0; i < m_plane.m_bullets.size(); i++) {
         for (int j = 0; j < m_enemies.size(); j++) {

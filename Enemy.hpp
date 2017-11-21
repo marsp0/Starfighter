@@ -6,7 +6,6 @@
 class Enemy : public sf::RectangleShape {
     public:
         Enemy(sf::Vector2f l_size);
-        ~Enemy();
 
         void Update(float timestep);
         void Render(sf::RenderWindow& l_window);
