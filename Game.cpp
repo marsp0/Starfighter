@@ -2,7 +2,7 @@
 #include "Game.hpp"
 #include <iostream>
 
-Game::Game() : m_gameState(), m_menuState(), m_window(sf::VideoMode(800,600,32), "StarShooter", sf::Style::Titlebar | sf::Style::Close){
+Game::Game() : m_gameState(), m_menuState(), m_highscoreState(), m_window(sf::VideoMode(800,600,32), "StarShooter", sf::Style::Titlebar | sf::Style::Close){
     Restart();
 }
 
@@ -18,7 +18,7 @@ void Game::Update(float timestep, sf::RenderWindow& l_window) {
             Restart();
             m_menuState.m_buttonPressed[0] = false;
         } else if (m_menuState.m_buttonPressed[1]) {
-            std::cout << "High scores" << std::endl;
+            ChangeState(&m_highscoreState);
             m_menuState.m_buttonPressed[1] = false;
         } else if (m_menuState.m_buttonPressed[2]) {
             m_window.close();
@@ -31,6 +31,7 @@ void Game::Render() {
     m_window.clear(sf::Color(sf::Color(150,207,234)));
     m_currentState->Render(*GetWindow());
     m_window.display();
+    
 }
 
 void Game::HandleInput() {
@@ -40,7 +41,13 @@ void Game::HandleInput() {
             m_window.close();
         } else if (event.type == sf::Event::EventType::KeyPressed) {
             if (event.key.code == sf::Keyboard::Key::Escape){
-                ChangeState();
+                if (m_currentState == &m_highscoreState){
+                    ChangeState(&m_menuState);
+                } else if (m_currentState == &m_menuState) {
+                    ChangeState(&m_gameState);
+                } else {
+                    ChangeState(&m_menuState);
+                }
             }
         } else if (event.type == sf::Event::MouseButtonPressed) {
             if (event.key.code == sf::Mouse::Button::Left){
@@ -75,12 +82,8 @@ sf::RenderWindow* Game::GetWindow() {
     return &m_window;
 }
 
-void Game::ChangeState(){
-    if (m_currentState == &m_gameState) {
-        m_currentState = &m_menuState;
-    }else {
-        m_currentState = &m_gameState;
-    }
+void Game::ChangeState(State* l_state){
+    m_currentState = l_state;
 }
 
 void Game::Restart() {

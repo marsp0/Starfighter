@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "GameState.hpp"
 #include "MenuState.hpp"
+#include "HighscoreState.hpp"
 
 class Game {
 public:
@@ -17,7 +18,7 @@ public:
     void Restart();
     sf::RenderWindow* GetWindow();
 
-    void ChangeState();
+    void ChangeState( State* l_state);
 private:
     GameState m_gameState;
     MenuState m_menuState;
@@ -25,4 +26,5 @@ private:
     sf::Clock m_clock;
     double m_elapsed;
     State *m_currentState;
+    HighscoreState m_highscoreState;
 };
