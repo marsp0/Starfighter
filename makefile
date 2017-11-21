@@ -1,5 +1,5 @@
-output: main.o Game.o GameState.o Plane.o Bullet.o Enemy.o Healthbar.o
-	g++ -std=c++14 main.o Game.o GameState.o Plane.o Bullet.o Enemy.o Healthbar.o -o output -lsfml-graphics -lsfml-window -lsfml-system
+output: main.o Game.o GameState.o Plane.o Bullet.o Enemy.o Healthbar.o Scoreboard.o Button.o MenuState.o
+	g++ -std=c++14 main.o Game.o GameState.o Plane.o Bullet.o Enemy.o Healthbar.o Scoreboard.o Button.o MenuState.o -o output -lsfml-graphics -lsfml-window -lsfml-system
 
 main.o: main.cpp
 	g++ -std=c++14 -c main.cpp 
@@ -21,6 +21,15 @@ Enemy.o: Enemy.cpp Enemy.hpp
 
 Healthbar.o: Healthbar.cpp Healthbar.hpp
 	g++ -std=c++14 -c Healthbar.cpp
+
+Scoreboard.o: Scoreboard.cpp Scoreboard.hpp
+	g++ -std=c++14 -c Scoreboard.cpp
+
+MenuState.o: MenuState.cpp MenuState.hpp
+	g++ -std=c++14 -c MenuState.cpp
+
+Button.o: Button.cpp Button.hpp
+	g++ -std=c++14 -c Button.cpp
 
 clean:
 	rm *.o output

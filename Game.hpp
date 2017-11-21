@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "GameState.hpp"
+#include "MenuState.hpp"
 
 class Game {
 public:
@@ -17,8 +18,9 @@ public:
     sf::RenderWindow* GetWindow();
 private:
     GameState m_gameState;
+    MenuState m_menuState;
     sf::RenderWindow m_window;
     sf::Clock m_clock;
     double m_elapsed;
-
+    State *m_currentState;
 };

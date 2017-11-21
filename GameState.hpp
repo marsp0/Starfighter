@@ -3,8 +3,11 @@
 #include <SFML/Graphics.hpp>
 #include "Plane.hpp"
 #include "Enemy.hpp"
+#include "Scoreboard.hpp"
+#include "State.hpp"
 
-class GameState {
+
+class GameState : public State{
 public:
     GameState();
     ~GameState();
@@ -15,4 +18,5 @@ public:
 private:
     Plane m_plane;
     std::vector<Enemy> m_enemies;
+    Scoreboard m_scoreboard;
 };

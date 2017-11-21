@@ -4,7 +4,7 @@
 #include "Enemy.hpp"
 #include <iostream>
 
-GameState::GameState() : m_plane() {
+GameState::GameState() : m_plane(), m_scoreboard() {
     for (int i=0; i < 5; i++){
         Enemy temp(sf::Vector2f(50.f,50.f));
         m_enemies.push_back(temp);
@@ -27,6 +27,7 @@ void GameState::Update(float timestep, sf::RenderWindow& l_window) {
                         m_enemies[j].TakeDamage(m_plane.m_bullets[i].m_damage);
                         if (!m_enemies[j].m_alive) {
                             m_enemies.erase(m_enemies.begin()+j);
+                            m_scoreboard.AddScore(10);
                         }
                         m_plane.m_bullets.erase(m_plane.m_bullets.begin()+i);
                     }
@@ -39,6 +40,7 @@ void GameState::Update(float timestep, sf::RenderWindow& l_window) {
             m_enemies.push_back(temp);
         }
     }
+    m_scoreboard.Update(timestep);
 }
 
 void GameState::Render(sf::RenderWindow& l_window) {
@@ -47,6 +49,7 @@ void GameState::Render(sf::RenderWindow& l_window) {
         // Call render method of enemy.
         m_enemies[i].Render(l_window);
     }
+    m_scoreboard.Render(l_window);
 }
 
 void GameState::HandleInput(){

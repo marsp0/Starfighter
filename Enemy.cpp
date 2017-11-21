@@ -8,7 +8,7 @@ Enemy::Enemy(sf::Vector2f l_size) : m_body(l_size), m_healthBar(sf::Vector2f(-50
     m_body.setOutlineThickness(2.f);
     m_body.setOutlineColor(sf::Color::Black);
     // Fix random spawn as it is the same on every launch of the executable
-    m_body.setPosition((float)(rand()%700 + 50), (float)(rand()%100));
+    m_body.setPosition((float)(rand()%690 + 50), (float)(rand()%100));
     m_body.setFillColor(sf::Color::Red);
 
     m_healthBar.setPosition(m_body.getPosition());

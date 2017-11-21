@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Game.hpp"
 
-Game::Game() : m_gameState(), m_window(sf::VideoMode(800,600,32), "StarShooter", sf::Style::Titlebar | sf::Style::Close){
+Game::Game() : m_gameState(), m_menuState(), m_window(sf::VideoMode(800,600,32), "StarShooter", sf::Style::Titlebar | sf::Style::Close){
     m_clock.restart();
     m_elapsed = 0.0f;
     m_window.setFramerateLimit(90);
