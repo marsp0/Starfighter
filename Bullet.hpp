@@ -17,7 +17,10 @@ public:
     float Left();
     float Right();
     std::chrono::time_point<std::chrono::system_clock> GetSpawnTime();
-
+    void IncreaseDamage(int l_damage);
+    void DecreaseDamage(int l_damage);
+    void SetDamage(int l_damage);
+    int GetDamage();
     int m_damage;
 
 private:

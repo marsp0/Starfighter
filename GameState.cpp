@@ -21,17 +21,24 @@ void GameState::Update(float timestep, sf::RenderWindow& l_window) {
     for (int i = 0; i < m_plane.m_bullets.size(); i++) {
         for (int j = 0; j < m_enemies.size(); j++) {
             // Check if the bullets intersect with the enemies vertically from the right
-            if ( ( (m_plane.m_bullets[i].getGlobalBounds().left > m_enemies[j].getPosition().x) and (m_enemies[j].getPosition().x + m_enemies[j].getSize().x > m_plane.m_bullets[i].getGlobalBounds().left) ) or \
-                ((m_plane.m_bullets[i].getGlobalBounds().left + m_plane.m_bullets[i].getGlobalBounds().width > m_enemies[j].getPosition().x) and ((m_enemies[j].getPosition().x + m_enemies[j].getSize().x) > m_plane.m_bullets[i].getGlobalBounds().left + m_plane.m_bullets[i].getGlobalBounds().width))) {
-                    if ((m_enemies[j].getPosition().y < m_plane.m_bullets[i].getGlobalBounds().top) and (m_enemies[j].getPosition().y+m_enemies[j].getSize().y > m_plane.m_bullets[i].getGlobalBounds().top)){
-                        m_enemies[j].TakeDamage(m_plane.m_bullets[i].m_damage);
-                        if (!m_enemies[j].m_alive) {
-                            m_enemies.erase(m_enemies.begin()+j);
-                            m_scoreboard.AddScore(10);
-                        }
-                        m_plane.m_bullets.erase(m_plane.m_bullets.begin()+i);
-                    }
+            // if ( ( (m_plane.m_bullets[i].getGlobalBounds().left > m_enemies[j].getPosition().x) and (m_enemies[j].getPosition().x + m_enemies[j].getSize().x > m_plane.m_bullets[i].getGlobalBounds().left) ) or \
+            //     ((m_plane.m_bullets[i].getGlobalBounds().left + m_plane.m_bullets[i].getGlobalBounds().width > m_enemies[j].getPosition().x) and ((m_enemies[j].getPosition().x + m_enemies[j].getSize().x) > m_plane.m_bullets[i].getGlobalBounds().left + m_plane.m_bullets[i].getGlobalBounds().width))) {
+            //         if ((m_enemies[j].getPosition().y < m_plane.m_bullets[i].getGlobalBounds().top) and (m_enemies[j].getPosition().y+m_enemies[j].getSize().y > m_plane.m_bullets[i].getGlobalBounds().top)){
+            //             m_enemies[j].TakeDamage(m_plane.m_bullets[i].GetDamage());
+            //             if (!m_enemies[j].IsAlive()) {
+            //                 m_enemies.erase(m_enemies.begin()+j);
+            //                 m_scoreboard.AddScore(10);
+            //             }
+            //             m_plane.m_bullets.erase(m_plane.m_bullets.begin()+i);
+            //         }
+            //     }
+            if (m_enemies[j].Collide(m_plane.m_bullets[i])){
+                m_plane.m_bullets.erase(m_plane.m_bullets.begin()+i);
+                if (!m_enemies[j].IsAlive()) {
+                    m_enemies.erase(m_enemies.begin()+j);
+                    m_scoreboard.AddScore(10);
                 }
+            }
         }
     }
     if (m_enemies.size() < 5) {

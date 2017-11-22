@@ -11,7 +11,7 @@ Bullet::Bullet(sf::Vector2f l_position, float x_direction, float y_direction) : 
     sf::CircleShape::setOutlineColor(sf::Color::Black);
     sf::CircleShape::setOutlineThickness(2.f);
     m_spawnTime = std::chrono::system_clock::now();
-    m_damage = 50;
+    m_damage = 30;
 }
 
 Bullet::~Bullet() {
@@ -49,4 +49,20 @@ float Bullet::Right() {
 
 std::chrono::time_point<std::chrono::system_clock> Bullet::GetSpawnTime() {
     return m_spawnTime;
+}
+
+void Bullet::IncreaseDamage(int l_damage) {
+    m_damage += l_damage;
+}
+
+void Bullet::DecreaseDamage(int l_damage){
+    m_damage -= l_damage;
+}
+
+void Bullet::SetDamage(int l_damage){
+    m_damage = l_damage;
+}
+
+int Bullet::GetDamage(){
+    return m_damage;
 }

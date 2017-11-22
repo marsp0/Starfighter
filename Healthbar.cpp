@@ -30,7 +30,7 @@ bool Healthbar::TakeDamage(int l_damage){
     if (m_health - l_damage <= 0) {
         return false;
     } else {
-        m_currentHealth.setSize(sf::Vector2f((float)(l_damage/2),7.f));
+        m_currentHealth.setSize(sf::Vector2f((float)((m_health-l_damage))*HP_WIDTH/100,7.f));
         m_health = m_health-l_damage;
 
 

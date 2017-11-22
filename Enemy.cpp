@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Enemy.hpp"
+#include "Bullet.hpp"
+#include "Plane.hpp"
 #include <iostream>
 
 Enemy::Enemy(sf::Vector2f l_size) : m_body(l_size), m_healthBar(sf::Vector2f(-500.f,-500.f)){
@@ -34,4 +36,23 @@ sf::Vector2f Enemy::getSize() {
 
 void Enemy::TakeDamage(int l_damage){
     m_alive = m_healthBar.TakeDamage(l_damage);
+}
+
+bool Enemy::Collide(Bullet& l_bullet) {
+    if ( ( (l_bullet.getGlobalBounds().left > getPosition().x) and (getPosition().x + getSize().x > l_bullet.getGlobalBounds().left) ) or \
+        ((l_bullet.getGlobalBounds().left + l_bullet.getGlobalBounds().width > getPosition().x) and ((getPosition().x + getSize().x) > l_bullet.getGlobalBounds().left + l_bullet.getGlobalBounds().width))) {
+            if ((getPosition().y < l_bullet.getGlobalBounds().top) and (getPosition().y + getSize().y > l_bullet.getGlobalBounds().top)){
+                TakeDamage(l_bullet.GetDamage());
+                return true;
+            }
+        }
+    return false;
+}
+
+bool Enemy::Collide(Plane& l_plane){
+
+}
+
+bool Enemy::IsAlive(){
+    return m_alive;
 }

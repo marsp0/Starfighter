@@ -3,7 +3,10 @@
 #include <iostream>
 
 Game::Game() : m_gameState(), m_menuState(), m_highscoreState(), m_window(sf::VideoMode(800,600,32), "StarShooter", sf::Style::Titlebar | sf::Style::Close){
-    Restart();
+    m_clock.restart();
+    m_elapsed = 0.0f;
+    m_window.setFramerateLimit(90);
+    m_currentState = &m_menuState;
 }
 
 Game::~Game() {
@@ -50,7 +53,7 @@ void Game::HandleInput() {
                 }
             }
         } else if (event.type == sf::Event::MouseButtonPressed) {
-            if (event.key.code == sf::Mouse::Button::Left){
+            if (event.mouseButton.button == sf::Mouse::Button::Left){
                 if (m_currentState == &m_menuState) {
                     m_menuState.m_pressed = true;
                     m_menuState.m_mousePosition = sf::Mouse::getPosition(*GetWindow());

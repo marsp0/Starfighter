@@ -8,7 +8,7 @@ Scoreboard::Scoreboard() : m_lives(3), m_score(0) {
     m_text.setFont(m_font);
     m_text.setString(GetMessage());
     m_text.setColor(sf::Color::White);
-    m_text.setPosition(0.f,0.f);
+    m_text.setPosition(10.f,10.f);
     m_text.setCharacterSize(20);
 }
 
