@@ -8,7 +8,6 @@
 class Game {
 public:
     Game();
-    ~Game();
 
     void HandleInput();
     void Update(float timestep, sf::RenderWindow& l_window);

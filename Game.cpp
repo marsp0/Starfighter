@@ -3,19 +3,20 @@
 #include <iostream>
 
 Game::Game() : m_gameState(), m_menuState(), m_highscoreState(), m_window(sf::VideoMode(800,600,32), "StarShooter", sf::Style::Titlebar | sf::Style::Close){
+    //Initialize the different states, window and clock.
     m_clock.restart();
     m_elapsed = 0.0f;
     m_window.setFramerateLimit(90);
     m_currentState = &m_menuState;
 }
 
-Game::~Game() {
-
-}
-
 void Game::Update(float timestep, sf::RenderWindow& l_window) {
     // NOTE : REMOVE THE WINDOW INSTANCE FROM THE UPDATE METHOD
+
+    // Calls the update method on the current state.
     m_currentState->Update(timestep, l_window);
+    // Checks wheather one of the menu buttons was pressed.
+    // If so, then it applies the action
     if (m_currentState == &m_menuState) {
         if (m_menuState.m_buttonPressed[0]) {
             Restart();

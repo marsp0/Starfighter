@@ -25,10 +25,6 @@ Plane::Plane() : sf::CircleShape(40,3), m_rifle(sf::Vector2f(14.f,45.f)){
 
 }
 
-Plane::~Plane() {
-
-}
-
 void Plane::Update(float timestep, sf::RenderWindow& l_window) {
     Move(timestep);
     
@@ -39,6 +35,7 @@ void Plane::Update(float timestep, sf::RenderWindow& l_window) {
 }
 
 void Plane::Move(float timestep){
+    // we move the plane and the rifle accordingly based on the buttons pressed
     sf::CircleShape::move(m_velocity.x*timestep,m_velocity.y*timestep);
     m_rifle.move(m_velocity.x*timestep,m_velocity.y*timestep);
     if ((Right() < 800) and (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))){        
@@ -92,6 +89,13 @@ void Plane::Move(float timestep){
 }
 
 void Plane::Shoot(float timestep){
+    // we shoot bullets every .3 seconds
+    // we have a timer on the last spawned bullet that we can check
+    // if we do not have any bullets, then we use the timer present in this class
+    // to keep the direction of the bullets in its class, we have a direction member
+    // that is basically calculating the vector representing the direction of the rifle and then
+    // we normalize it
+    // NOTE : perhaps change the SQRT function with something more efficient ?
     auto ms = std::chrono::system_clock::now();
     if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
         sf::Vector2f l_position{getBulletSpawn()};
@@ -108,6 +112,8 @@ void Plane::Shoot(float timestep){
             m_spawnTime = bullet.GetSpawnTime();
         }
     }
+    // This loop clears the bullets list if there are any buillets that 
+    // have hit an enemy or out of window
     for (int i=0; i < m_bullets.size(); i++){
         bool temp;
         temp = m_bullets[i].Update(timestep);
@@ -120,7 +126,6 @@ void Plane::Shoot(float timestep){
 void Plane::Render(sf::RenderWindow& l_window){
     l_window.draw(*this);
     l_window.draw(m_rifle);
-
     for (int i = 0; i < m_bullets.size(); i++){
         l_window.draw(m_bullets[i]);
     }
@@ -155,6 +160,19 @@ float Plane::Bottom(){
 }
 
 float Plane::getRotationAngle(sf::Vector2i l_mousePosition){
+    // This function gets the rotation angle that helps us track the mouse position with the gun
+    // Explanation : 
+    //                  RP - angle at mouse position
+    //   |\      |      K - Axis of rotation of our gun
+    //   | \     |      RK = RP (K || P) - Angle that we want to rotate our gun
+    //   |  \ R  |      P = My - Gy
+    // P |   \   |  K   Q = Gx - Mx
+    //   |    \  |      Solution : RP = RK = atan(Q/P)
+    //   |     \ |      We could try asin and acos (and I did), but I believe that because of the RANGE
+    //   |______\|      of these functions we are not getting the correct result. Might be wrong though
+    //      Q
+    // 
+    // 
     sf::Vector2f l_mousePos{l_mousePosition};
     return atan2(m_rifle.getPosition().y - l_mousePos.y, m_rifle.getPosition().x - l_mousePos.x)*180.f/3.1428 - 90;
 }

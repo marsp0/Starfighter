@@ -8,7 +8,6 @@
 class Plane : public sf::CircleShape {
     public:
         Plane();
-        ~Plane();
 
         void Update(float timestep, sf::RenderWindow& l_window);
         void Render(sf::RenderWindow& l_window);

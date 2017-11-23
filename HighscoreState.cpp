@@ -18,6 +18,7 @@ HighscoreState::HighscoreState() : m_maxSize(0){
     m_text.setFont(m_font);
     m_text.setString(GetMessage());
     m_text.setPosition(0.f,0.f);
+    m_text.setPosition((800 - m_text.getLocalBounds().width)/2, (600 - m_text.getLocalBounds().height)/2);
 }
 
 void HighscoreState::Render(sf::RenderWindow& l_window) {
