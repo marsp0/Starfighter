@@ -1,5 +1,5 @@
-output: main.o Game.o GameState.o Plane.o Bullet.o Enemy.o Healthbar.o Scoreboard.o Button.o MenuState.o HighscoreState.o
-	g++ -std=c++14 main.o Game.o GameState.o Plane.o Bullet.o Enemy.o Healthbar.o Scoreboard.o Button.o MenuState.o HighscoreState.o -o output -lsfml-graphics -lsfml-window -lsfml-system
+output: main.o Game.o GameState.o Plane.o Bullet.o Enemy.o Healthbar.o Scoreboard.o Button.o MenuState.o HighscoreState.o Quadtree.o
+	g++ -std=c++14 main.o Game.o GameState.o Plane.o Bullet.o Enemy.o Healthbar.o Scoreboard.o Button.o MenuState.o HighscoreState.o Quadtree.o -o output -lsfml-graphics -lsfml-window -lsfml-system
 
 main.o: main.cpp
 	g++ -std=c++14 -c main.cpp 
@@ -33,6 +33,9 @@ Button.o: Button.cpp Button.hpp
 
 HighscoreState.o: HighscoreState.cpp HighscoreState.hpp
 	g++ -std=c++14 -c HighscoreState.cpp
+
+Quadtree.o: Quadtree.cpp Quadtree.hpp
+	g++ -std=c++14 -c Quadtree.cpp
 
 clean:
 	rm *.o output

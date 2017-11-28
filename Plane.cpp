@@ -7,11 +7,11 @@
 Plane::Plane() : sf::CircleShape(40,3), m_rifle(sf::Vector2f(14.f,45.f)){
     m_planeVelocity = 200.f;
     m_velocity = {m_planeVelocity,m_planeVelocity};
-    sf::CircleShape::setPosition(sf::Vector2f(400.f,300.f));
     sf::CircleShape::setFillColor(sf::Color(48, 48, 48));
     sf::CircleShape::setOrigin(40,40);
     sf::CircleShape::setOutlineColor(sf::Color::Black);
     sf::CircleShape::setOutlineThickness(2.0f);
+    sf::CircleShape::setPosition(sf::Vector2f(400.f,300.f));
     m_spawnTime = std::chrono::system_clock::now();
     m_sideDistance = std::sqrt(std::pow(sf::CircleShape::getPoint(0).x - sf::CircleShape::getPoint(1).x, 2) + std::pow(sf::CircleShape::getPoint(0).y - sf::CircleShape::getPoint(1).y, 2));
 

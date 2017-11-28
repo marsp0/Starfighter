@@ -2,7 +2,7 @@
 #include "Game.hpp"
 #include <iostream>
 
-Game::Game() : m_gameState(), m_menuState(), m_highscoreState(), m_window(sf::VideoMode(800,600,32), "StarShooter", sf::Style::Titlebar | sf::Style::Close){
+Game::Game() : m_gameState(), m_menuState(), m_highscoreState(), m_window(sf::VideoMode(800,600,32), "Starfighter", sf::Style::Titlebar | sf::Style::Close){
     //Initialize the different states, window and clock.
     m_clock.restart();
     m_elapsed = 0.0f;

@@ -4,7 +4,7 @@
 #include "Enemy.hpp"
 #include <iostream>
 
-GameState::GameState() : m_plane(), m_scoreboard() {
+GameState::GameState() : m_plane(), m_scoreboard(), m_quad(0,0,800,600,1) {
     // Initialize the plane and the scoreboard
     // Create 5 enemies
     for (int i=0; i < 5; i++){
@@ -39,6 +39,7 @@ void GameState::Update(float timestep, sf::RenderWindow& l_window) {
 }
 
 void GameState::Render(sf::RenderWindow& l_window) {
+    m_quad.Render(l_window);
     m_plane.Render(l_window);
     for (int i = 0 ; i < m_enemies.size(); i++) {
         m_enemies[i].Render(l_window);
