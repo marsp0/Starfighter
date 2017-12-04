@@ -52,6 +52,8 @@ void Game::HandleInput() {
                 } else {
                     ChangeState(&m_menuState);
                 }
+            } else if (event.key.code == sf::Keyboard::Key::E) {
+                m_gameState.Respawn();
             }
         } else if (event.type == sf::Event::MouseButtonPressed) {
             if (event.mouseButton.button == sf::Mouse::Button::Left){

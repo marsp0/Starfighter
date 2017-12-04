@@ -8,8 +8,8 @@ class Button {
 
         void Update(float timestep);
         void Render(sf::RenderWindow& l_window);
-
         sf::FloatRect GetGlobalBounds();
+        
     private:
         sf::Text m_text;
         sf::Font m_font;

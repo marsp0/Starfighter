@@ -10,7 +10,7 @@ Enemy::Enemy(sf::Vector2f l_size) : m_body(l_size), m_healthBar(sf::Vector2f(-50
     m_body.setOutlineThickness(2.f);
     m_body.setOutlineColor(sf::Color::Black);
     // Fix random spawn as it is the same on every launch of the executable
-    m_body.setPosition((float)(rand()%690 + 50), (float)(rand()%100));
+    m_body.setPosition((float)(rand()%690 + 50), (float)(rand()%200));
     m_body.setFillColor(sf::Color::Red);
 
     m_healthBar.setPosition(m_body.getPosition());
@@ -26,33 +26,51 @@ void Enemy::Render(sf::RenderWindow& l_window) {
     l_window.draw(m_body);
 }
 
-sf::Vector2f Enemy::getPosition() {
+sf::Vector2f Enemy::GetSize(){
+    return m_body.getSize();
+}
+
+sf::Vector2f Enemy::GetPosition() {
     return m_body.getPosition();
 }
 
-sf::Vector2f Enemy::getSize() {
-    return m_body.getSize();
+sf::FloatRect Enemy::GetGlobalBounds(){
+    return m_body.getGlobalBounds();
 }
 
 void Enemy::TakeDamage(int l_damage){
     m_alive = m_healthBar.TakeDamage(l_damage);
 }
 
-bool Enemy::Collide(Bullet& l_bullet) {
-    if ( ( (l_bullet.getGlobalBounds().left > getPosition().x) and (getPosition().x + getSize().x > l_bullet.getGlobalBounds().left) ) or \
-        ((l_bullet.getGlobalBounds().left + l_bullet.getGlobalBounds().width > getPosition().x) and ((getPosition().x + getSize().x) > l_bullet.getGlobalBounds().left + l_bullet.getGlobalBounds().width))) {
-            if ((getPosition().y < l_bullet.getGlobalBounds().top) and (getPosition().y + getSize().y > l_bullet.getGlobalBounds().top)){
-                TakeDamage(l_bullet.GetDamage());
+bool Enemy::Collide(GameObject* l_gameObject) {
+    if (((l_gameObject->GetGlobalBounds().left > GetPosition().x) and (GetPosition().x + GetSize().x > l_gameObject->GetGlobalBounds().left) ) or \
+        ((l_gameObject->GetGlobalBounds().left + l_gameObject->GetGlobalBounds().width > GetPosition().x) and ((GetPosition().x + GetSize().x) > l_gameObject->GetGlobalBounds().left + l_gameObject->GetGlobalBounds().width))) {
+            if ((GetPosition().y < l_gameObject->GetGlobalBounds().top) and (GetPosition().y + GetSize().y > l_gameObject->GetGlobalBounds().top)){
+                // Fix so that it takes the damage of the gameObjects
+                // will all gameobjects be able to do damage ?
+                TakeDamage(100);
                 return true;
             }
         }
     return false;
 }
 
-bool Enemy::Collide(Plane& l_plane){
-
-}
-
 bool Enemy::IsAlive(){
     return m_alive;
+}
+
+int Enemy::Top() {
+    return m_body.getPosition().y;
+}
+
+int Enemy::Bottom(){
+    return m_body.getPosition().y + m_body.getSize().y;
+}
+
+int Enemy::Left(){
+    return m_body.getPosition().x;
+}
+
+int Enemy::Right() {
+    return m_body.getPosition().x + m_body.getSize().x;
 }

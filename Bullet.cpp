@@ -4,14 +4,14 @@
 #include <chrono>
 
 
-Bullet::Bullet(sf::Vector2f l_position, float x_direction, float y_direction) : sf::CircleShape(6), m_direction(x_direction,y_direction) {
+Bullet::Bullet(sf::Vector2f l_position, float x_direction, float y_direction) : m_body(6), m_direction(x_direction,y_direction) {
     m_velocity = 450.f;
-    sf::CircleShape::setPosition(l_position);
-    sf::CircleShape::setOrigin(6,6);
-    sf::CircleShape::setOutlineColor(sf::Color::Black);
-    sf::CircleShape::setOutlineThickness(2.f);
+    m_body.setPosition(l_position);
+    m_body.setOrigin(6,6);
+    m_body.setOutlineColor(sf::Color::Black);
+    m_body.setOutlineThickness(2.f);
     m_spawnTime = std::chrono::system_clock::now();
-    m_damage = 30;
+    m_damage = 100;
 }
 
 Bullet::~Bullet() {
@@ -19,32 +19,40 @@ Bullet::~Bullet() {
 }
 
 bool Bullet::Update(float timestep) {
-    if ((sf::CircleShape::getPosition().y - m_velocity*timestep > 0) and (sf::CircleShape::getPosition().x - m_velocity*timestep > 0)){
-        sf::CircleShape::move(m_direction.x*m_velocity*timestep, m_direction.y*m_velocity*timestep);
+    if ((m_body.getPosition().y - m_velocity*timestep > 0) and (m_body.getPosition().x - m_velocity*timestep > 0)){
+        m_body.move(m_direction.x*m_velocity*timestep, m_direction.y*m_velocity*timestep);
         return true;
     } else {
         return false;
     }
 }
 
-sf::Vector2f Bullet::getPosition(){
-    return sf::CircleShape::getPosition();
+void Bullet::Render(sf::RenderWindow& l_window) {
+    l_window.draw(m_body);
 }
 
-float Bullet::Top(){
-    return sf::CircleShape::getOrigin().y - sf::CircleShape::getRadius();
+sf::Vector2f Bullet::GetPosition(){
+    return m_body.getPosition();
 }
 
-float Bullet::Bottom() {
-    return sf::CircleShape::getOrigin().y + sf::CircleShape::getRadius();
+sf::FloatRect Bullet::GetGlobalBounds() {
+    return m_body.getGlobalBounds();
 }
 
-float Bullet::Left(){
-    return sf::CircleShape::getOrigin().x - sf::CircleShape::getRadius();
+int Bullet::Top(){
+    return m_body.getOrigin().y - m_body.getRadius();
 }
 
-float Bullet::Right() {
-    return sf::CircleShape::getOrigin().x + sf::CircleShape::getRadius();
+int Bullet::Bottom() {
+    return m_body.getOrigin().y + m_body.getRadius();
+}
+
+int Bullet::Left(){
+    return m_body.getOrigin().x - m_body.getRadius();
+}
+
+int Bullet::Right() {
+    return m_body.getOrigin().x + m_body.getRadius();
 }
 
 std::chrono::time_point<std::chrono::system_clock> Bullet::GetSpawnTime() {
@@ -65,4 +73,8 @@ void Bullet::SetDamage(int l_damage){
 
 int Bullet::GetDamage(){
     return m_damage;
+}
+
+bool Bullet::Collide(GameObject* l_gameObject) {
+
 }

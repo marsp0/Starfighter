@@ -127,7 +127,7 @@ void Plane::Render(sf::RenderWindow& l_window){
     l_window.draw(*this);
     l_window.draw(m_rifle);
     for (int i = 0; i < m_bullets.size(); i++){
-        l_window.draw(m_bullets[i]);
+        m_bullets[i].Render(l_window);
     }
 }
 

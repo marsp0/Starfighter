@@ -4,19 +4,25 @@
 #include "Healthbar.hpp"
 #include "Bullet.hpp"
 #include "Plane.hpp"
+#include "GameObject.hpp"
 
-class Enemy : public sf::RectangleShape {
+class Enemy : public GameObject {
     public:
         Enemy(sf::Vector2f l_size);
 
         void Update(float timestep);
         void Render(sf::RenderWindow& l_window);
-        sf::Vector2f getPosition();
-        sf::Vector2f getSize();
+
+        sf::Vector2f GetPosition();
+        sf::FloatRect GetGlobalBounds();
+        sf::Vector2f GetSize();
         void TakeDamage(int l_damage);
         bool IsAlive();
-        bool Collide(Bullet& l_bullet);
-        bool Collide(Plane& l_plane);
+        bool Collide(GameObject* l_gameObject);
+        int Top();
+        int Bottom();
+        int Left();
+        int Right();
 
     private:
         

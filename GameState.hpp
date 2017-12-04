@@ -15,9 +15,9 @@ public:
     void Render(sf::RenderWindow& l_window);
     void HandleInput();
     void Restart();
+    void Respawn();
 private:
     Plane m_plane;
-    std::vector<Enemy> m_enemies;
     Scoreboard m_scoreboard;
     Quad m_quad;
 };

@@ -1,14 +1,23 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "GameObject.hpp"
+#include <iostream>
+
+class GameObject;
 
 class Quad {
     public:
         Quad(int l_x, int l_y, int l_width, int l_height, int l_level);
-        void Insert(sf::RectangleShape& l_gameObject);
-        // GameObject* CheckCollisions();
-        bool Contains(sf::RectangleShape& l_gameObject);
+        void Insert(GameObject* l_gameObject);
+        bool Contains(GameObject* l_gameObject);
         void Render(sf::RenderWindow& l_window);
+        void Update(float timestep);
+        int GetIndex(GameObject* l_gameObject);
+        std::vector<GameObject*> Retrieve(GameObject* l_gameObject);
+        void Clear();
+        std::vector<GameObject*> m_objects;
+        
     private:
         int m_x;
         int m_y;
@@ -16,7 +25,7 @@ class Quad {
         int m_height;
         int m_level;
         int m_maxLevel;
-        std::vector<sf::RectangleShape> m_objects;
+        
         std::vector<Quad> m_subRegions;
         sf::RectangleShape m_boundingShape;
 };
