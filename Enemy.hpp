@@ -5,6 +5,7 @@
 #include "Bullet.hpp"
 #include "Plane.hpp"
 #include "GameObject.hpp"
+#include <memory>
 
 class Enemy : public GameObject {
     public:
@@ -18,7 +19,7 @@ class Enemy : public GameObject {
         sf::Vector2f GetSize();
         void TakeDamage(int l_damage);
         bool IsAlive();
-        bool Collide(GameObject* l_gameObject);
+        bool Collide(std::shared_ptr<GameObject> l_gameObject);
         int Top();
         int Bottom();
         int Left();

@@ -13,10 +13,9 @@ Quad::Quad(int l_x, int l_y, int l_width, int l_height, int l_level) : m_x(l_x),
     }
 }
 
-void Quad::Insert(GameObject* l_gameObject) {
+void Quad::Insert(std::shared_ptr<GameObject> l_gameObject) {
     m_objects.push_back(l_gameObject);
     l_gameObject->parent = this;
-    // printf("Current recursion level is %u, the subregion is %u - %u and the size of the objects here is %u\n", m_level,m_x, m_y, m_objects.size());
     if (m_objects.size() > 5 || m_subRegions.size() > 0) {
         if (m_subRegions.size() == 0) {
             m_subRegions.push_back(Quad(m_x,m_y,m_width/2.f, m_height/2, m_level + 1));
@@ -35,7 +34,6 @@ void Quad::Insert(GameObject* l_gameObject) {
             }
         }
         for (int i = temp.size()-1; i > -1; i--){
-            // Delete the elements that we pushed further from the current level
             if (m_objects.size() > 0) {
                 m_objects.erase(m_objects.begin() + temp[i]);
             }
@@ -43,14 +41,13 @@ void Quad::Insert(GameObject* l_gameObject) {
     }
 }   
 
-bool Quad::Contains(GameObject* l_gameObject) {
+bool Quad::Contains(std::shared_ptr<GameObject> l_gameObject) {
     return (m_x <= l_gameObject->GetPosition().x && m_x+m_width >= l_gameObject->GetPosition().x + l_gameObject->GetGlobalBounds().width  && \
             m_y <= l_gameObject->GetPosition().y && m_y+m_height >= l_gameObject->GetPosition().y + l_gameObject->GetGlobalBounds().height );
 }
 
 void Quad::Render(sf::RenderWindow& l_window) {
     l_window.draw(m_boundingShape);
-    
     for (int i =0; i < m_subRegions.size() ; i++) {
         m_subRegions[i].Render(l_window);
     }
@@ -63,37 +60,75 @@ void Quad::Update(float timestep) {
 
 }
 
-int Quad::GetIndex(GameObject* l_gameObject) {
+int Quad::GetIndex(std::shared_ptr<GameObject> l_gameObject) {
     int index{-1};
-    float verticalMidpoint{m_x + m_width/2};
-    float horisontalMidpoint{m_y + m_height/2};
-
+    
+    float verticalMidpoint{(float)(m_x) + m_width/2};
+    float horisontalMidpoint{(float)(m_y) + m_height/2};
     bool topQuadrant{horisontalMidpoint > l_gameObject->Bottom()};
     bool bottomQuadrant{horisontalMidpoint < l_gameObject->Top()};
 
     if (l_gameObject->Right() < verticalMidpoint) {
         if (topQuadrant) {
-            index = 1;
+            index = 0;
         } else if (bottomQuadrant) {
-            index = 4;
+            index = 3;
         }
     } else if (l_gameObject->Left() > verticalMidpoint) {
         if (topQuadrant) {
-            index = 2;
+            index = 1;
         } else if (bottomQuadrant) {
-            index = 3;
+            index = 2;
         }
     }
     return index;
 }
 
-std::vector<GameObject*> Quad::Retrieve(GameObject* l_gameObject) {
+std::vector<std::shared_ptr<GameObject>> Quad::Retrieve(std::shared_ptr<GameObject> l_gameObject) {
     int index{GetIndex(l_gameObject)};
-    std::vector<GameObject*> returnObjects;
+    std::vector<std::shared_ptr<GameObject>> returnObjects;
     if (index != -1 and m_subRegions.size() > 0) {
-        std::vector<GameObject*> newVector{m_subRegions[index].Retrieve(l_gameObject)};
+        std::vector<std::shared_ptr<GameObject>> newVector = m_subRegions[index].Retrieve(l_gameObject);
         returnObjects.insert(returnObjects.end(), newVector.begin(), newVector.end());
     }
+    
     returnObjects.insert(returnObjects.end(), m_objects.begin(), m_objects.end());
     return returnObjects;
+}
+
+void Quad::Remove(std::shared_ptr<GameObject> l_gameObject) {
+    int index{GetIndex(l_gameObject)};
+    if (index != -1 && m_subRegions.size() > 0) {
+        m_subRegions[index].Remove(l_gameObject);
+    } 
+    for (int i = 0; i < m_objects.size() ; i++) {
+        if (m_objects[i] == l_gameObject) {
+            m_objects.erase(m_objects.begin() + i);
+            if (m_subRegions.size() > 0) {
+                BubbleUp(this);
+            }
+            break;
+        }
+    }
+}
+
+void Quad::BubbleUp( Quad* l_quad) {
+    for (int i = 0 ; i < m_subRegions.size() ; i++) {
+        if (m_subRegions[i].m_objects.size() > 0) {
+            l_quad->m_objects.push_back(m_subRegions[i].m_objects[0]);
+            m_subRegions[i].m_objects.erase(m_subRegions[i].m_objects.begin());
+            return;
+
+        }
+    }
+    m_subRegions.clear();
+}
+
+int Quad::GetCount() {
+    if (m_subRegions.size() > 0) {
+        for (int i = 0; i < m_subRegions.size() ; i++) {
+            std::cout << "level is " << m_level << " and the size is " << m_subRegions[i].GetCount() << std::endl;
+        }
+    }
+    return m_objects.size();
 }

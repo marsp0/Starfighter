@@ -102,21 +102,21 @@ void Plane::Shoot(float timestep){
         float magnitude{sqrt( pow( (l_position.x - m_rifle.getPosition().x),2) + pow( (l_position.y - m_rifle.getPosition().y),2))};
         float x_direction{(l_position.x - m_rifle.getPosition().x)/magnitude};
         float y_direction{(l_position.y - m_rifle.getPosition().y)/magnitude};
-        if ((!m_bullets.empty()) and (std::chrono::duration_cast<std::chrono::milliseconds>(ms - m_bullets[m_bullets.size()-1].GetSpawnTime()).count() > 300)) {
-            Bullet bullet(l_position, x_direction, y_direction);
-            m_spawnTime = bullet.GetSpawnTime();
+        if ((!m_bullets.empty()) and (std::chrono::duration_cast<std::chrono::milliseconds>(ms - m_bullets[m_bullets.size()-1]->GetSpawnTime()).count() > 300)) {
+            auto bullet = std::make_shared<Bullet>(l_position, x_direction, y_direction);
+            m_spawnTime = bullet->GetSpawnTime();
             m_bullets.push_back(bullet);
         } else if (std::chrono::duration_cast<std::chrono::milliseconds>(ms - m_spawnTime).count() > 300){
-            Bullet bullet(l_position, x_direction, y_direction);
+            auto bullet = std::make_shared<Bullet>(l_position, x_direction, y_direction);
             m_bullets.push_back(bullet);
-            m_spawnTime = bullet.GetSpawnTime();
+            m_spawnTime = bullet->GetSpawnTime();
         }
     }
     // This loop clears the bullets list if there are any buillets that 
     // have hit an enemy or out of window
     for (int i=0; i < m_bullets.size(); i++){
         bool temp;
-        temp = m_bullets[i].Update(timestep);
+        temp = m_bullets[i]->Update(timestep);
         if (!temp){
             m_bullets.erase(m_bullets.begin()+i);
         }
@@ -127,7 +127,7 @@ void Plane::Render(sf::RenderWindow& l_window){
     l_window.draw(*this);
     l_window.draw(m_rifle);
     for (int i = 0; i < m_bullets.size(); i++){
-        m_bullets[i].Render(l_window);
+        m_bullets[i]->Render(l_window);
     }
 }
 

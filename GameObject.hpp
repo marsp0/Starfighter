@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Quadtree.hpp"
+#include <memory>
 
 class Quad;
 
@@ -15,7 +16,7 @@ class GameObject {
         int virtual Left()=0;
         int virtual Right()=0;
         void virtual Render(sf::RenderWindow& l_window)=0;
-        bool virtual Collide(GameObject* l_gameObject)=0;
+        bool virtual Collide(std::shared_ptr<GameObject> l_gameObject)=0;
 
         Quad* parent;
 };

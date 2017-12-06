@@ -23,7 +23,7 @@ public:
     void DecreaseDamage(int l_damage);
     void SetDamage(int l_damage);
     int GetDamage();
-    bool Collide(GameObject* l_gameObject);
+    bool Collide(std::shared_ptr<GameObject> l_gameObject);
     int m_damage;
 
 private:

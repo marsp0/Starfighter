@@ -42,7 +42,7 @@ void Enemy::TakeDamage(int l_damage){
     m_alive = m_healthBar.TakeDamage(l_damage);
 }
 
-bool Enemy::Collide(GameObject* l_gameObject) {
+bool Enemy::Collide(std::shared_ptr<GameObject> l_gameObject) {
     if (((l_gameObject->GetGlobalBounds().left > GetPosition().x) and (GetPosition().x + GetSize().x > l_gameObject->GetGlobalBounds().left) ) or \
         ((l_gameObject->GetGlobalBounds().left + l_gameObject->GetGlobalBounds().width > GetPosition().x) and ((GetPosition().x + GetSize().x) > l_gameObject->GetGlobalBounds().left + l_gameObject->GetGlobalBounds().width))) {
             if ((GetPosition().y < l_gameObject->GetGlobalBounds().top) and (GetPosition().y + GetSize().y > l_gameObject->GetGlobalBounds().top)){

@@ -16,6 +16,7 @@ public:
     void HandleInput();
     void Restart();
     void Respawn();
+    int GetCount();
 private:
     Plane m_plane;
     Scoreboard m_scoreboard;

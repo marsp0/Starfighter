@@ -4,6 +4,7 @@
 #include <vector>
 #include "Bullet.hpp"
 #include <chrono>
+#include <memory>
 
 class Plane : public sf::CircleShape {
     public:
@@ -25,7 +26,8 @@ class Plane : public sf::CircleShape {
         sf::Vector2f getBulletSpawn();
 
     public:
-        std::vector<Bullet> m_bullets;
+        std::vector<std::shared_ptr<Bullet> > m_bullets;
+
     private:
         sf::Vector2f m_velocity;
         float m_planeVelocity;

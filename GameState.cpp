@@ -3,39 +3,32 @@
 #include "Plane.hpp"
 #include "Enemy.hpp"
 #include <iostream>
+#include <memory>
 
 GameState::GameState() : m_plane(), m_scoreboard(), m_quad(0,0,800,600,1) {
     // Initialize the plane and the scoreboard
     // Create 5 enemies
     for (int i=0; i < 5; i++){
-        Enemy* temp = new Enemy(sf::Vector2f(50.f,50.f));
-        m_quad.Insert(temp);
+        auto enemy = std::make_shared<Enemy>(sf::Vector2f(50.f,50.f));
+        m_quad.Insert(enemy);
     }
 }
 
 void GameState::Update(float timestep, sf::RenderWindow& l_window) {
     m_plane.Update(timestep, l_window);
     std::vector<int> toRemove;
-    for (int i=0; i < m_plane.m_bullets.size(); i++) {
-        
-        std::vector<GameObject*> possibleCollisions{m_quad.Retrieve(&(m_plane.m_bullets[i]))};
-        for (int j =0; j < m_plane.m_bullets.size() ; j++) {
-            for (int i =0 ; i < possibleCollisions.size(); i++) {
-                if (possibleCollisions[i]->Collide(&(m_plane.m_bullets[j]))) {
-                    for (int k = 0 ; k < possibleCollisions[i]->parent->m_objects.size() ; k++) {
-                        printf("dsa\n");
-                        if (possibleCollisions[i]->parent->m_objects[k] == possibleCollisions[i]) {
-                            delete possibleCollisions[i];
-                            possibleCollisions.erase(possibleCollisions.begin() + i);
-                            possibleCollisions[i]->parent->m_objects.erase(possibleCollisions[i]->parent->m_objects.begin() + k);
-                        }
-                    }
-                    printf("123\n");
-                    
-                    m_plane.m_bullets.erase(m_plane.m_bullets.begin() + j);
-                }
+    
+    for (int j = 0; j < m_plane.m_bullets.size() ; j++) {
+        std::vector<std::shared_ptr<GameObject> > possibleCollisions{m_quad.Retrieve(m_plane.m_bullets[j])};
+        for (int i =0 ; i < possibleCollisions.size(); i++) {
+            if (possibleCollisions[i]->Collide(m_plane.m_bullets[j])) {
+                m_quad.Remove(possibleCollisions[i]);
+                toRemove.push_back(j);
             }
         }
+    }
+    for (int i = toRemove.size()-1 ; i > -1; i--) {
+        m_plane.m_bullets.erase(m_plane.m_bullets.begin() + toRemove[i]);
     }
     m_scoreboard.Update(timestep);
 }
@@ -61,6 +54,11 @@ void GameState::Restart() {
 }
 
 void GameState::Respawn() {
-    Enemy* temp = new Enemy(sf::Vector2f(50.f,50.f));
-    m_quad.Insert(temp);
+    auto enemy = std::make_shared<Enemy>(sf::Vector2f(50.f,50.f));
+    m_quad.Insert(enemy);
+}
+
+int GameState::GetCount() {
+    
+    return m_quad.GetCount();
 }

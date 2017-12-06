@@ -3,20 +3,27 @@
 #include <SFML/Graphics.hpp>
 #include "GameObject.hpp"
 #include <iostream>
+#include <memory>
 
 class GameObject;
 
 class Quad {
     public:
         Quad(int l_x, int l_y, int l_width, int l_height, int l_level);
-        void Insert(GameObject* l_gameObject);
-        bool Contains(GameObject* l_gameObject);
+        void Insert(std::shared_ptr<GameObject> l_gameObject);
+        bool Contains(std::shared_ptr<GameObject> l_gameObject);
         void Render(sf::RenderWindow& l_window);
         void Update(float timestep);
-        int GetIndex(GameObject* l_gameObject);
-        std::vector<GameObject*> Retrieve(GameObject* l_gameObject);
+        int GetIndex(std::shared_ptr<GameObject> l_gameObject);
+        std::vector<std::shared_ptr<GameObject>> Retrieve(std::shared_ptr<GameObject> l_gameObject);
         void Clear();
-        std::vector<GameObject*> m_objects;
+        void Remove(std::shared_ptr<GameObject> l_gameObject);
+        void BubbleUp(Quad* l_quad);
+        int GetCount();
+
+    public:
+        std::vector<std::shared_ptr<GameObject> > m_objects;
+        std::vector<Quad> m_subRegions;
         
     private:
         int m_x;
@@ -26,6 +33,5 @@ class Quad {
         int m_level;
         int m_maxLevel;
         
-        std::vector<Quad> m_subRegions;
         sf::RectangleShape m_boundingShape;
 };

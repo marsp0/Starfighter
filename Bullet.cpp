@@ -40,19 +40,20 @@ sf::FloatRect Bullet::GetGlobalBounds() {
 }
 
 int Bullet::Top(){
-    return m_body.getOrigin().y - m_body.getRadius();
+    return m_body.getPosition().y + m_body.getOrigin().y - m_body.getRadius();
 }
 
 int Bullet::Bottom() {
-    return m_body.getOrigin().y + m_body.getRadius();
+    return m_body.getPosition().y + m_body.getOrigin().y + m_body.getRadius();
 }
 
 int Bullet::Left(){
-    return m_body.getOrigin().x - m_body.getRadius();
+    
+    return m_body.getPosition().x + m_body.getOrigin().x - m_body.getRadius();
 }
 
 int Bullet::Right() {
-    return m_body.getOrigin().x + m_body.getRadius();
+    return m_body.getPosition().x + m_body.getOrigin().x + m_body.getRadius();
 }
 
 std::chrono::time_point<std::chrono::system_clock> Bullet::GetSpawnTime() {
@@ -75,6 +76,5 @@ int Bullet::GetDamage(){
     return m_damage;
 }
 
-bool Bullet::Collide(GameObject* l_gameObject) {
-
+bool Bullet::Collide(std::shared_ptr<GameObject> l_gameObject) {
 }
