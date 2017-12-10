@@ -45,10 +45,11 @@ void GameState::HandleInput(){
 }
 
 void GameState::Restart() {
-    // for (int i=0; i < 5; i++){
-    //     Enemy* temp = new Enemy(sf::Vector2f(50.f,50.f));
-    //     m_quad.Insert(temp);
-    // }
+    m_quad.Clear();
+    for (int i=0; i < 5; i++){
+        auto enemy = std::make_shared<Enemy>(sf::Vector2f(50.f,50.f));
+        m_quad.Insert(enemy);
+    }
     m_plane.Restart();
     m_scoreboard.Restart();
 }

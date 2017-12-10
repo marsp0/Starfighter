@@ -118,17 +118,22 @@ void Quad::BubbleUp( Quad* l_quad) {
             l_quad->m_objects.push_back(m_subRegions[i].m_objects[0]);
             m_subRegions[i].m_objects.erase(m_subRegions[i].m_objects.begin());
             return;
-
         }
     }
     m_subRegions.clear();
 }
 
 int Quad::GetCount() {
+    std::cout << "Level is " << m_level << " x is and y is " << m_x << " " << m_y << " and objects are " << m_objects.size() << std::endl;
     if (m_subRegions.size() > 0) {
         for (int i = 0; i < m_subRegions.size() ; i++) {
-            std::cout << "level is " << m_level << " and the size is " << m_subRegions[i].GetCount() << std::endl;
+            std::cout << m_subRegions[i].GetCount() << std::endl; 
         }
     }
     return m_objects.size();
+}
+
+void Quad::Clear() {
+    m_objects.clear();
+    m_subRegions.clear();
 }
