@@ -6,6 +6,7 @@
 
 Enemy::Enemy(sf::Vector2f l_size) : m_body(l_size), m_healthBar(sf::Vector2f(-500.f,-500.f)){
 
+    m_toRender = true;
     // BODY
     m_body.setOutlineThickness(2.f);
     m_body.setOutlineColor(sf::Color::Black);
@@ -49,6 +50,7 @@ bool Enemy::Collide(std::shared_ptr<GameObject> l_gameObject) {
                 // Fix so that it takes the damage of the gameObjects
                 // will all gameobjects be able to do damage ?
                 TakeDamage(100);
+                std::cout << "got to hgere" << std::endl;
                 return true;
             }
         }

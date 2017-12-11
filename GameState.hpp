@@ -5,7 +5,7 @@
 #include "Enemy.hpp"
 #include "Scoreboard.hpp"
 #include "State.hpp"
-#include "Quadtree.hpp"
+#include "Grid.hpp"
 
 class GameState : public State{
 public:
@@ -16,9 +16,8 @@ public:
     void HandleInput();
     void Restart();
     void Respawn();
-    int GetCount();
 private:
     Plane m_plane;
     Scoreboard m_scoreboard;
-    Quad m_quad;
+    Grid m_grid;
 };

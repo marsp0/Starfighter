@@ -14,8 +14,10 @@ class Grid {
         std::vector<std::shared_ptr<GameObject> > GetCollisions(std::shared_ptr<GameObject>);
         void Insert(std::shared_ptr<GameObject> l_gameObject);
         void Remove(std::shared_ptr<GameObject> l_gameObject);
+        std::vector<std::pair<int,int> > GetIndices(std::shared_ptr<GameObject> l_gameObject);
+        std::vector<std::vector<Cell> > m_objects;
 
     protected:
-        std::vector<std::vector<Cell> > m_objects;
+        
 
 };

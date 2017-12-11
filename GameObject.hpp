@@ -18,5 +18,5 @@ class GameObject {
         void virtual Render(sf::RenderWindow& l_window)=0;
         bool virtual Collide(std::shared_ptr<GameObject> l_gameObject)=0;
 
-        Quad* parent;
+        bool m_toRender;
 };

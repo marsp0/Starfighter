@@ -9,12 +9,12 @@ class Cell {
         void Insert(std::shared_ptr<GameObject> l_gameObject);
         void Remove(std::shared_ptr<GameObject> l_gameObject);
         void Render(sf::RenderWindow& l_window);
-
+        std::vector<std::shared_ptr<GameObject> > m_objects;
     protected:
         int m_x;
         int m_y;
         int m_width;
         int m_height;
         sf::RectangleShape m_background;
-        std::vector<std::shared_ptr<GameObject> > m_objects;
+        
 };

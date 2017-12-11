@@ -5,6 +5,7 @@
 
 
 Bullet::Bullet(sf::Vector2f l_position, float x_direction, float y_direction) : m_body(6), m_direction(x_direction,y_direction) {
+    m_toRender = true;
     m_velocity = 450.f;
     m_body.setPosition(l_position);
     m_body.setOrigin(6,6);
