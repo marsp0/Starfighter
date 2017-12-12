@@ -20,7 +20,7 @@ void Grid::Render(sf::RenderWindow& l_window) {
 
 std::vector<std::shared_ptr<GameObject> > Grid::GetCollisions(std::shared_ptr<GameObject> l_gameObject){
     std::vector<std::pair<int,int> > cells{GetIndices(l_gameObject)};
-    std::vector<std::shared_ptr<GameObject> > result{};
+    std::vector<std::shared_ptr<GameObject> > result;
     for (int i = 0; i < cells.size(); i++) {
             result.insert(result.end(), m_objects[cells[i].second][cells[i].first].m_objects.begin(), m_objects[cells[i].second][cells[i].first].m_objects.end() );
     }

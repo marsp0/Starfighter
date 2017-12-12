@@ -28,10 +28,4 @@ void Cell::Remove(std::shared_ptr<GameObject> l_gameObject) {
 
 void Cell::Render(sf::RenderWindow& l_window) {
     l_window.draw(m_background);
-    for (int i = 0; i < m_objects.size(); i++) {
-        if (m_objects[i]-> m_toRender) {
-            m_objects[i]->Render(l_window);
-            m_objects[i]-> m_toRender = false;
-        }
-    }
 }

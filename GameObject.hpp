@@ -1,10 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "Quadtree.hpp"
 #include <memory>
-
-class Quad;
 
 class GameObject {
     public:
@@ -17,6 +14,6 @@ class GameObject {
         int virtual Right()=0;
         void virtual Render(sf::RenderWindow& l_window)=0;
         bool virtual Collide(std::shared_ptr<GameObject> l_gameObject)=0;
-
-        bool m_toRender;
+        void virtual SetAlive(bool l_value)=0;
+        bool virtual IsAlive()=0;
 };

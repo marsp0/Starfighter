@@ -19,6 +19,7 @@ class Enemy : public GameObject {
         sf::Vector2f GetSize();
         void TakeDamage(int l_damage);
         bool IsAlive();
+        void SetAlive(bool l_value);
         bool Collide(std::shared_ptr<GameObject> l_gameObject);
         int Top();
         int Bottom();

@@ -24,6 +24,8 @@ public:
     void SetDamage(int l_damage);
     int GetDamage();
     bool Collide(std::shared_ptr<GameObject> l_gameObject);
+    bool IsAlive();
+    void SetAlive(bool l_value);
     int m_damage;
 
 private:
@@ -31,5 +33,5 @@ private:
     std::chrono::time_point<std::chrono::system_clock> m_spawnTime;
     sf::Vector2f m_direction;
     sf::CircleShape m_body;
-    
+    bool m_alive;
 };

@@ -5,7 +5,8 @@
 
 
 Bullet::Bullet(sf::Vector2f l_position, float x_direction, float y_direction) : m_body(6), m_direction(x_direction,y_direction) {
-    m_toRender = true;
+
+    m_alive = true;
     m_velocity = 450.f;
     m_body.setPosition(l_position);
     m_body.setOrigin(6,6);
@@ -78,4 +79,12 @@ int Bullet::GetDamage(){
 }
 
 bool Bullet::Collide(std::shared_ptr<GameObject> l_gameObject) {
+}
+
+bool Bullet::IsAlive() {
+    return m_alive;
+}
+
+void Bullet::SetAlive(bool l_value) {
+    m_alive = l_value;
 }

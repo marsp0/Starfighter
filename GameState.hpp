@@ -20,4 +20,5 @@ private:
     Plane m_plane;
     Scoreboard m_scoreboard;
     Grid m_grid;
+    std::vector<std::shared_ptr<GameObject>> m_objects;
 };
