@@ -21,6 +21,10 @@ class Enemy : public GameObject {
         bool IsAlive();
         void SetAlive(bool l_value);
         bool Collide(std::shared_ptr<GameObject> l_gameObject);
+        void IncreaseDamage(int l_damage);
+        void DecreaseDamage(int l_damage);
+        void SetDamage(int l_damage);
+        int GetDamage();
         int Top();
         int Bottom();
         int Left();
@@ -31,5 +35,6 @@ class Enemy : public GameObject {
         sf::RectangleShape m_body;
         Healthbar m_healthBar;
         bool m_alive;
+        int m_damage;
         
 };

@@ -50,7 +50,7 @@ void GameState::Update(float timestep, sf::RenderWindow& l_window) {
 }
 
 void GameState::Render(sf::RenderWindow& l_window) {
-    m_grid.Render(l_window);
+    // m_grid.Render(l_window);
     m_plane.Render(l_window);
     m_scoreboard.Render(l_window);
     for (int i = 0; i < m_objects.size() ; i++) {

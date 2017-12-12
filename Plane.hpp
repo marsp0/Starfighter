@@ -6,7 +6,7 @@
 #include <chrono>
 #include <memory>
 
-class Plane : public sf::CircleShape {
+class Plane {
     public:
         Plane();
 
@@ -30,6 +30,7 @@ class Plane : public sf::CircleShape {
 
     private:
         sf::Vector2f m_velocity;
+
         float m_planeVelocity;
         // timer for the bullet spawn 
         std::chrono::time_point<std::chrono::system_clock> m_spawnTime;
@@ -39,4 +40,9 @@ class Plane : public sf::CircleShape {
         // 
         sf::RectangleShape m_rifle;
 
+        //body
+        sf::CircleShape m_body;
+
+        sf::Texture m_texture;
+        sf::Sprite m_sprite;
 };

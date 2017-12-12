@@ -4,7 +4,7 @@
 #include "Plane.hpp"
 #include <iostream>
 
-Enemy::Enemy(sf::Vector2f l_size) : m_body(l_size), m_healthBar(sf::Vector2f(-500.f,-500.f)){
+Enemy::Enemy(sf::Vector2f l_size) : m_body(l_size), m_healthBar(sf::Vector2f(-500.f,-500.f)), m_damage(0){
 
     m_alive = true;
     // BODY
@@ -49,11 +49,27 @@ bool Enemy::Collide(std::shared_ptr<GameObject> l_gameObject) {
             if ((GetPosition().y < l_gameObject->GetGlobalBounds().top) and (GetPosition().y + GetSize().y > l_gameObject->GetGlobalBounds().top)){
                 // Fix so that it takes the damage of the gameObjects
                 // will all gameobjects be able to do damage ?
-                TakeDamage(100);
+                TakeDamage(l_gameObject->GetDamage());
                 return true;
             }
         }
     return false;
+}
+
+void Enemy::IncreaseDamage(int l_damage) {
+    m_damage += l_damage;
+}
+
+void Enemy::DecreaseDamage(int l_damage){
+    m_damage -= l_damage;
+}
+
+void Enemy::SetDamage(int l_damage){
+    m_damage = l_damage;
+}
+
+int Enemy::GetDamage(){
+    return m_damage;
 }
 
 bool Enemy::IsAlive(){

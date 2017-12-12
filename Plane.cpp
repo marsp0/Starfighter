@@ -4,16 +4,16 @@
 #include <chrono>
 #include <cmath>
 
-Plane::Plane() : sf::CircleShape(40,3), m_rifle(sf::Vector2f(14.f,45.f)){
+Plane::Plane() : m_body(40,3), m_rifle(sf::Vector2f(14.f,45.f)){
     m_planeVelocity = 200.f;
     m_velocity = {m_planeVelocity,m_planeVelocity};
-    sf::CircleShape::setFillColor(sf::Color(48, 48, 48));
-    sf::CircleShape::setOrigin(40,40);
-    sf::CircleShape::setOutlineColor(sf::Color::Black);
-    sf::CircleShape::setOutlineThickness(2.0f);
-    sf::CircleShape::setPosition(sf::Vector2f(400.f,300.f));
+    m_body.setFillColor(sf::Color(48, 48, 48));
+    m_body.setOrigin(40,40);
+    m_body.setOutlineColor(sf::Color::Black);
+    m_body.setOutlineThickness(2.0f);
+    m_body.setPosition(sf::Vector2f(400.f,300.f));
     m_spawnTime = std::chrono::system_clock::now();
-    m_sideDistance = std::sqrt(std::pow(sf::CircleShape::getPoint(0).x - sf::CircleShape::getPoint(1).x, 2) + std::pow(sf::CircleShape::getPoint(0).y - sf::CircleShape::getPoint(1).y, 2));
+    m_sideDistance = std::sqrt(std::pow(m_body.getPoint(0).x - m_body.getPoint(1).x, 2) + std::pow(m_body.getPoint(0).y - m_body.getPoint(1).y, 2));
 
     // RIFLE
 
@@ -21,7 +21,14 @@ Plane::Plane() : sf::CircleShape(40,3), m_rifle(sf::Vector2f(14.f,45.f)){
     m_rifle.setFillColor(sf::Color::White);
     m_rifle.setOutlineColor(sf::Color::Black);
     m_rifle.setOutlineThickness(2.f);
-    m_rifle.setPosition(sf::CircleShape::getPosition());
+    m_rifle.setPosition(m_body.getPosition());
+
+    // Start texture
+    m_texture.loadFromFile("assets/B-17.png");
+    m_sprite.setTexture(m_texture);
+    m_sprite.setPosition(50.f,50.f);
+    m_sprite.setScale(.6f,.6f);
+    std::cout << m_sprite.getPosition().x << std::endl;
 
 }
 
@@ -36,7 +43,7 @@ void Plane::Update(float timestep, sf::RenderWindow& l_window) {
 
 void Plane::Move(float timestep){
     // we move the plane and the rifle accordingly based on the buttons pressed
-    sf::CircleShape::move(m_velocity.x*timestep,m_velocity.y*timestep);
+    m_body.move(m_velocity.x*timestep,m_velocity.y*timestep);
     m_rifle.move(m_velocity.x*timestep,m_velocity.y*timestep);
     if ((Right() < 800) and (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))){        
         m_velocity.x = m_planeVelocity;
@@ -124,7 +131,8 @@ void Plane::Shoot(float timestep){
 }
 
 void Plane::Render(sf::RenderWindow& l_window){
-    l_window.draw(*this);
+    l_window.draw(m_sprite);
+    l_window.draw(m_body);
     l_window.draw(m_rifle);
     for (int i = 0; i < m_bullets.size(); i++){
         m_bullets[i]->Render(l_window);
@@ -136,27 +144,27 @@ void Plane::HandleInput() {
 }
 
 float Plane::x() {
-    return sf::CircleShape::getPosition().x;
+    return m_body.getPosition().x;
 }
 
 float Plane::y() {
-    return sf::CircleShape::getPosition().y;
+    return m_body.getPosition().y;
 }
 
 float Plane::Left() {
-    return sf::CircleShape::getPosition().x - m_sideDistance/2;
+    return m_body.getPosition().x - m_sideDistance/2;
 }
 
 float Plane::Right(){
-    return sf::CircleShape::getPosition().x + m_sideDistance/2;
+    return m_body.getPosition().x + m_sideDistance/2;
 }
 
 float Plane::Top(){
-    return sf::CircleShape::getPosition().y - sf::CircleShape::getRadius();
+    return m_body.getPosition().y - m_body.getRadius();
 }
 
 float Plane::Bottom(){
-    return sf::CircleShape::getPosition().y + 0.5 * sf::CircleShape::getRadius();
+    return m_body.getPosition().y + 0.5 * m_body.getRadius();
 }
 
 float Plane::getRotationAngle(sf::Vector2i l_mousePosition){
@@ -186,5 +194,5 @@ sf::Vector2f Plane::getBulletSpawn() {
 void Plane::Restart(){
     m_bullets.clear();
     m_rifle.setPosition(400.f, 400.f);
-    sf::CircleShape::setPosition(400.f,400.f);
+    m_body.setPosition(400.f,400.f);
 }

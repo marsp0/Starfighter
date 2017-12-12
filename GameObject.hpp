@@ -16,4 +16,8 @@ class GameObject {
         bool virtual Collide(std::shared_ptr<GameObject> l_gameObject)=0;
         void virtual SetAlive(bool l_value)=0;
         bool virtual IsAlive()=0;
+        void virtual IncreaseDamage(int l_damage)=0;
+        void virtual DecreaseDamage(int l_damage)=0;
+        void virtual SetDamage(int l_damage)=0;
+        int virtual GetDamage()=0;
 };

@@ -13,7 +13,7 @@ Bullet::Bullet(sf::Vector2f l_position, float x_direction, float y_direction) : 
     m_body.setOutlineColor(sf::Color::Black);
     m_body.setOutlineThickness(2.f);
     m_spawnTime = std::chrono::system_clock::now();
-    m_damage = 100;
+    m_damage = 30;
 }
 
 Bullet::~Bullet() {
