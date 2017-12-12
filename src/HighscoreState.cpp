@@ -4,14 +4,14 @@
 #include <iostream>
 
 HighscoreState::HighscoreState() : m_maxSize(0){
-    std::fstream l_scores;
-    l_scores.open("scores.txt");
-    std::string str;
-    while(getline(l_scores, str))
-    {
-        m_highScores.push_back(str + "\n");
-    }
-    l_scores.close();
+    // std::fstream l_scores;
+    // l_scores.open("scores.txt");
+    // std::string str;
+    // while(getline(l_scores, str))
+    // {
+    //     m_highScores.push_back(str + "\n");
+    // }
+    // l_scores.close();
     
     // TODO : Load from stream or pass via constructor
     m_font.loadFromFile("zorque.ttf");
