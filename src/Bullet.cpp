@@ -79,6 +79,7 @@ int Bullet::GetDamage(){
 }
 
 void Bullet::TakeDamage(int l_damage) {
+
 }
 
 bool Bullet::Collide(std::shared_ptr<GameObject> l_gameObject) {

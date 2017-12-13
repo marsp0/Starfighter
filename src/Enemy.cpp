@@ -4,17 +4,22 @@
 #include "Plane.hpp"
 #include <iostream>
 
-Enemy::Enemy(sf::Vector2f l_size) : m_body(l_size), m_healthBar(sf::Vector2f(-500.f,-500.f)), m_damage(0){
+Enemy::Enemy(sf::Vector2f l_size) : m_healthBar(sf::Vector2f(-500.f,-500.f)), m_damage(0){
 
     m_alive = true;
     // BODY
-    m_body.setOutlineThickness(2.f);
-    m_body.setOutlineColor(sf::Color::Black);
-    // Fix random spawn as it is the same on every launch of the executable
-    m_body.setPosition((float)(rand()%690 + 50), (float)(rand()%200));
-    m_body.setFillColor(sf::Color::Red);
 
-    m_healthBar.setPosition(m_body.getPosition());
+    m_scale = .29f;
+
+    m_texture.loadFromFile("../assets/enemyShip.png");
+    m_sprite.setTexture(m_texture);
+    m_sprite.scale(m_scale,m_scale);
+    m_sprite.setPosition((float)(rand()%690 + 50), (float)(rand()%200));
+    m_width = 114.f;
+    m_height = 201.f;
+
+    m_healthBar.setPosition(m_sprite.getPosition());
+    m_healthBar.setSize(sf::Vector2f(114.4 * m_scale, 7.f));
 }
 
 
@@ -23,20 +28,20 @@ void Enemy::Update(float timestep){
 }
 
 void Enemy::Render(sf::RenderWindow& l_window) {
+    l_window.draw(m_sprite);
     m_healthBar.Render(l_window);
-    l_window.draw(m_body);
 }
 
 sf::Vector2f Enemy::GetSize(){
-    return m_body.getSize();
+    return sf::Vector2f(m_sprite.getTextureRect().width * m_scale, m_sprite.getTextureRect().height * m_scale);
 }
 
 sf::Vector2f Enemy::GetPosition() {
-    return m_body.getPosition();
+    return m_sprite.getPosition();
 }
 
 sf::FloatRect Enemy::GetGlobalBounds(){
-    return m_body.getGlobalBounds();
+    return m_sprite.getGlobalBounds();
 }
 
 void Enemy::TakeDamage(int l_damage){
@@ -81,17 +86,17 @@ void Enemy::SetAlive(bool l_value) {
 }
 
 int Enemy::Top() {
-    return m_body.getPosition().y;
+    return m_sprite.getPosition().y;
 }
 
 int Enemy::Bottom(){
-    return m_body.getPosition().y + m_body.getSize().y;
+    return m_sprite.getPosition().y + GetSize().y;
 }
 
 int Enemy::Left(){
-    return m_body.getPosition().x;
+    return m_sprite.getPosition().x;
 }
 
 int Enemy::Right() {
-    return m_body.getPosition().x + m_body.getSize().x;
+    return m_sprite.getPosition().x + GetSize().x;
 }

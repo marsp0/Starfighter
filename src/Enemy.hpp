@@ -32,9 +32,14 @@ class Enemy : public GameObject {
 
     private:
         
-        sf::RectangleShape m_body;
         Healthbar m_healthBar;
         bool m_alive;
         int m_damage;
         
+
+        sf::Texture m_texture;
+        sf::Sprite m_sprite;
+        float m_width;
+        float m_height;
+        float m_scale;
 };
