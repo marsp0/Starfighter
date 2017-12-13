@@ -26,9 +26,10 @@ void GameState::Update(float timestep, sf::RenderWindow& l_window) {
         std::set<std::shared_ptr<GameObject>> possibleCollisions{m_grid.GetCollisions(m_plane.m_bullets[j])};
         for (auto i=possibleCollisions.begin() ; i != possibleCollisions.end(); i++) {
             if ((*i)->Collide(m_plane.m_bullets[j])) {
-                (*i)->SetAlive(false);
                 m_plane.m_bullets[j]->SetAlive(false);
-                m_grid.Remove(*i);
+                if (!(*i)->IsAlive()) {
+                    m_grid.Remove(*i);
+                }
             }
         }
     }

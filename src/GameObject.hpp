@@ -20,4 +20,5 @@ class GameObject {
         void virtual DecreaseDamage(int l_damage)=0;
         void virtual SetDamage(int l_damage)=0;
         int virtual GetDamage()=0;
+        void virtual TakeDamage(int l_damage)=0;
 };

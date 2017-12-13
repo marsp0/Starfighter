@@ -23,6 +23,7 @@ public:
     void DecreaseDamage(int l_damage);
     void SetDamage(int l_damage);
     int GetDamage();
+    void TakeDamage(int l_damage);
     bool Collide(std::shared_ptr<GameObject> l_gameObject);
     bool IsAlive();
     void SetAlive(bool l_value);
