@@ -4,47 +4,29 @@
 #include <chrono>
 #include <cmath>
 
-Plane::Plane() : m_body(40,3), m_rifle(sf::Vector2f(14.f,45.f)){
+Plane::Plane(){
+    m_width = 115.5f;
+    m_height = 59.5f;
     m_planeVelocity = 200.f;
     m_velocity = {m_planeVelocity,m_planeVelocity};
-    m_body.setFillColor(sf::Color(48, 48, 48));
-    m_body.setOrigin(40,40);
-    m_body.setOutlineColor(sf::Color::Black);
-    m_body.setOutlineThickness(2.0f);
-    m_body.setPosition(sf::Vector2f(400.f,300.f));
+
     m_spawnTime = std::chrono::system_clock::now();
-    m_sideDistance = std::sqrt(std::pow(m_body.getPoint(0).x - m_body.getPoint(1).x, 2) + std::pow(m_body.getPoint(0).y - m_body.getPoint(1).y, 2));
-
-    // RIFLE
-
-    m_rifle.setOrigin(sf::Vector2f(7.f,45.f));
-    m_rifle.setFillColor(sf::Color::White);
-    m_rifle.setOutlineColor(sf::Color::Black);
-    m_rifle.setOutlineThickness(2.f);
-    m_rifle.setPosition(m_body.getPosition());
 
     // Start texture
-    m_texture.loadFromFile("assets/B-17.png");
+    m_texture.loadFromFile("../assets/B-17.png");
     m_sprite.setTexture(m_texture);
-    m_sprite.setPosition(50.f,50.f);
-    m_sprite.setScale(.6f,.6f);
-    std::cout << m_sprite.getPosition().x << std::endl;
-
+    m_sprite.setScale(.5f,.5f);
+    m_sprite.setPosition(sf::Vector2f(400.f,300.f));
 }
 
 void Plane::Update(float timestep, sf::RenderWindow& l_window) {
     Move(timestep);
-    
-    sf::Vector2i l_mousePosition{sf::Mouse::getPosition(l_window)}; 
-    m_rifle.setRotation(getRotationAngle(l_mousePosition));
-    Shoot(timestep);
+    Shoot(timestep,l_window);
 
 }
 
 void Plane::Move(float timestep){
-    // we move the plane and the rifle accordingly based on the buttons pressed
-    m_body.move(m_velocity.x*timestep,m_velocity.y*timestep);
-    m_rifle.move(m_velocity.x*timestep,m_velocity.y*timestep);
+    m_sprite.move(m_velocity.x*timestep,m_velocity.y*timestep);
     if ((Right() < 800) and (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))){        
         m_velocity.x = m_planeVelocity;
         if ((Left() > 0) and (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))){
@@ -95,7 +77,7 @@ void Plane::Move(float timestep){
     }
 }
 
-void Plane::Shoot(float timestep){
+void Plane::Shoot(float timestep,sf::RenderWindow& l_window){
     // we shoot bullets every .3 seconds
     // we have a timer on the last spawned bullet that we can check
     // if we do not have any bullets, then we use the timer present in this class
@@ -105,27 +87,37 @@ void Plane::Shoot(float timestep){
     // NOTE : perhaps change the SQRT function with something more efficient ?
     auto ms = std::chrono::system_clock::now();
     if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
-        sf::Vector2f l_position{getBulletSpawn()};
-        float magnitude{sqrt( pow( (l_position.x - m_rifle.getPosition().x),2) + pow( (l_position.y - m_rifle.getPosition().y),2))};
-        float x_direction{(l_position.x - m_rifle.getPosition().x)/magnitude};
-        float y_direction{(l_position.y - m_rifle.getPosition().y)/magnitude};
+        std::pair<sf::Vector2f,sf::Vector2f> l_position{getBulletSpawn()};
+        // first bullet
+        float magnitude_1{sqrt( pow( (l_position.first.x - sf::Mouse::getPosition(l_window).x),2) + pow( (l_position.first.y - sf::Mouse::getPosition(l_window).y),2))};
+        float x_direction_1{(sf::Mouse::getPosition(l_window).x - l_position.first.x)/magnitude_1};
+        float y_direction_1{(sf::Mouse::getPosition(l_window).y - l_position.first.y)/magnitude_1};
+
+        float magnitude_2{sqrt( pow( (l_position.first.x - sf::Mouse::getPosition(l_window).x),2) + pow( (l_position.first.y - sf::Mouse::getPosition(l_window).y),2))};
+        float x_direction_2{(sf::Mouse::getPosition(l_window).x - l_position.second.x)/magnitude_2};
+        float y_direction_2{(sf::Mouse::getPosition(l_window).y - l_position.second.y)/magnitude_2};
         if ((!m_bullets.empty()) and (std::chrono::duration_cast<std::chrono::milliseconds>(ms - m_bullets[m_bullets.size()-1]->GetSpawnTime()).count() > 300)) {
-            auto bullet = std::make_shared<Bullet>(l_position, x_direction, y_direction);
-            m_spawnTime = bullet->GetSpawnTime();
-            m_bullets.push_back(bullet);
+            auto bullet_1 = std::make_shared<Bullet>(l_position.first, x_direction_1, y_direction_1);
+            auto bullet_2 = std::make_shared<Bullet>(l_position.second, x_direction_2, y_direction_2);
+            m_spawnTime = bullet_2->GetSpawnTime();
+            m_bullets.push_back(bullet_1);
+            m_bullets.push_back(bullet_2);
         } else if (std::chrono::duration_cast<std::chrono::milliseconds>(ms - m_spawnTime).count() > 300){
-            auto bullet = std::make_shared<Bullet>(l_position, x_direction, y_direction);
-            m_bullets.push_back(bullet);
-            m_spawnTime = bullet->GetSpawnTime();
+            auto bullet_1 = std::make_shared<Bullet>(l_position.first, x_direction_1, y_direction_1);
+            auto bullet_2 = std::make_shared<Bullet>(l_position.second, x_direction_2, y_direction_2);
+            m_bullets.push_back(bullet_1);
+            m_bullets.push_back(bullet_2);
+            m_spawnTime = bullet_1->GetSpawnTime();
         }
     }
     // This loop clears the bullets list if there are any buillets that 
     // have hit an enemy or out of window
     for (int i=0; i < m_bullets.size(); i++){
-        bool temp;
-        temp = m_bullets[i]->Update(timestep);
-        if (!temp){
-            m_bullets.erase(m_bullets.begin()+i);
+        m_bullets[i]->Update(timestep);
+    }
+    for (int i = m_bullets.size() - 1; i > -1; i--) {
+        if (!m_bullets[i]->IsAlive()) {
+            m_bullets.erase(m_bullets.begin() + i);
         }
     }
 }
@@ -133,7 +125,6 @@ void Plane::Shoot(float timestep){
 void Plane::Render(sf::RenderWindow& l_window){
     l_window.draw(m_sprite);
     l_window.draw(m_body);
-    l_window.draw(m_rifle);
     for (int i = 0; i < m_bullets.size(); i++){
         m_bullets[i]->Render(l_window);
     }
@@ -144,27 +135,27 @@ void Plane::HandleInput() {
 }
 
 float Plane::x() {
-    return m_body.getPosition().x;
+    return m_sprite.getPosition().x + m_width/2;
 }
 
 float Plane::y() {
-    return m_body.getPosition().y;
+    return m_sprite.getPosition().y + m_height/2;
 }
 
 float Plane::Left() {
-    return m_body.getPosition().x - m_sideDistance/2;
+    return x() - m_width/2.f;
 }
 
 float Plane::Right(){
-    return m_body.getPosition().x + m_sideDistance/2;
+    return x() + m_width/2.f;
 }
 
 float Plane::Top(){
-    return m_body.getPosition().y - m_body.getRadius();
+    return y() - m_height/2.f;
 }
 
 float Plane::Bottom(){
-    return m_body.getPosition().y + 0.5 * m_body.getRadius();
+    return y() + m_height/2.f;
 }
 
 float Plane::getRotationAngle(sf::Vector2i l_mousePosition){
@@ -185,14 +176,16 @@ float Plane::getRotationAngle(sf::Vector2i l_mousePosition){
     return atan2(m_rifle.getPosition().y - l_mousePos.y, m_rifle.getPosition().x - l_mousePos.x)*180.f/3.1428 - 90;
 }
 
-sf::Vector2f Plane::getBulletSpawn() {
-    float x {(float)(m_rifle.getPosition().x + m_rifle.getSize().y * sin(m_rifle.getRotation()*3.1428/180))};
-    float y {(float)(m_rifle.getPosition().y - m_rifle.getSize().y * sin((90-m_rifle.getRotation())*3.1428/180))};
-    return sf::Vector2f(x , y);
+std::pair<sf::Vector2f,sf::Vector2f> Plane::getBulletSpawn() {
+    float x_1{Left() + 35.5f};
+    float y_1{Top() + 10.f};
+
+    float x_2{Left() + 81.f};
+    float y_2{Top() + 10.f};
+    return std::make_pair(sf::Vector2f(x_1,y_1),sf::Vector2f(x_2,y_2));
 }
 
 void Plane::Restart(){
     m_bullets.clear();
-    m_rifle.setPosition(400.f, 400.f);
     m_body.setPosition(400.f,400.f);
 }

@@ -9,7 +9,7 @@ public:
     Bullet(sf::Vector2f l_position, float x_direction, float y_direction);
     ~Bullet();
 
-    bool Update(float timestep);
+    void Update(float timestep);
     void Render(sf::RenderWindow& l_window);
     sf::Vector2f GetPosition();
     sf::FloatRect GetGlobalBounds();

@@ -20,10 +20,10 @@ class Plane {
         float Top();
         float Bottom();
         void Move(float timestep);
-        void Shoot(float timestep);
+        void Shoot(float timestep,sf::RenderWindow& l_window);
         float getRotationAngle(sf::Vector2i l_mousePosition);
         void Restart();
-        sf::Vector2f getBulletSpawn();
+        std::pair<sf::Vector2f,sf::Vector2f> getBulletSpawn();
 
     public:
         std::vector<std::shared_ptr<Bullet> > m_bullets;
@@ -34,8 +34,6 @@ class Plane {
         float m_planeVelocity;
         // timer for the bullet spawn 
         std::chrono::time_point<std::chrono::system_clock> m_spawnTime;
-        // side size to render it properly
-        float m_sideDistance;
 
         // 
         sf::RectangleShape m_rifle;
@@ -45,4 +43,6 @@ class Plane {
 
         sf::Texture m_texture;
         sf::Sprite m_sprite;
+        float m_width;
+        float m_height;
 };

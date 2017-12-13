@@ -1,12 +1,13 @@
 #include <SFML/Graphics.hpp>
 #include "Game.hpp"
 #include <iostream>
+#include <set>
 
 Game::Game() : m_gameState(), m_menuState(), m_highscoreState(), m_window(sf::VideoMode(800,600,32), "Starfighter", sf::Style::Titlebar | sf::Style::Close){
     //Initialize the different states, window and clock.
     m_clock.restart();
     m_elapsed = 0.0f;
-    m_window.setFramerateLimit(90);
+    m_window.setFramerateLimit(120);
     m_currentState = &m_menuState;
 }
 

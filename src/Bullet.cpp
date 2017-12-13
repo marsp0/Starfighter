@@ -4,7 +4,7 @@
 #include <chrono>
 
 
-Bullet::Bullet(sf::Vector2f l_position, float x_direction, float y_direction) : m_body(6), m_direction(x_direction,y_direction) {
+Bullet::Bullet(sf::Vector2f l_position, float x_direction, float y_direction) : m_body(3), m_direction(x_direction,y_direction) {
 
     m_alive = true;
     m_velocity = 450.f;
@@ -20,12 +20,12 @@ Bullet::~Bullet() {
 
 }
 
-bool Bullet::Update(float timestep) {
-    if ((m_body.getPosition().y - m_velocity*timestep > 0) and (m_body.getPosition().x - m_velocity*timestep > 0)){
+void Bullet::Update(float timestep) {
+    if (((m_body.getPosition().y - m_velocity*timestep > 0) and (m_body.getPosition().y - m_velocity*timestep < 600)) and ((m_body.getPosition().x - m_velocity*timestep > 0) and (m_body.getPosition().x - m_velocity*timestep < 800))){
         m_body.move(m_direction.x*m_velocity*timestep, m_direction.y*m_velocity*timestep);
-        return true;
+        m_alive = true;
     } else {
-        return false;
+        m_alive = false;
     }
 }
 

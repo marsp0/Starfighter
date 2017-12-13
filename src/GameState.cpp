@@ -7,41 +7,39 @@
 #include <set>
 
 GameState::GameState() : m_plane(), m_scoreboard(), m_grid() {
-    // Initialize the plane and the scoreboard
+    // Initialize the plane, the scoreboard and the grid
     // Create 5 enemies
     for (int i = 0; i < 5; i++){
         auto enemy = std::make_shared<Enemy>(sf::Vector2f(50.f,50.f));
-        
+        // adding their pointers to the grid that takes care of collision detection
         m_grid.Insert(enemy);
+        // adding their pointers to the objects vector that takes care of rendering
         m_objects.push_back(enemy);
     }
 }
 
 void GameState::Update(float timestep, sf::RenderWindow& l_window) {
+
     m_plane.Update(timestep, l_window);
-    std::vector<int> toRemove;
-    
+    // Check the collisions in this loop
     for (int j = 0; j < m_plane.m_bullets.size() ; j++) {
-        std::vector<std::shared_ptr<GameObject>> possibleCollisions{m_grid.GetCollisions(m_plane.m_bullets[j])};
-        std::set<std::shared_ptr<GameObject>> result;
-        for (int i=0; i < possibleCollisions.size() ; i++) {
-            result.insert(possibleCollisions[i]);
-        }
-        for (auto i=result.begin() ; i != result.end(); i++) {
+        std::set<std::shared_ptr<GameObject>> possibleCollisions{m_grid.GetCollisions(m_plane.m_bullets[j])};
+        for (auto i=possibleCollisions.begin() ; i != possibleCollisions.end(); i++) {
             if ((*i)->Collide(m_plane.m_bullets[j])) {
                 (*i)->SetAlive(false);
+                m_plane.m_bullets[j]->SetAlive(false);
                 m_grid.Remove(*i);
-                toRemove.push_back(j);
             }
         }
     }
-    for (int i = toRemove.size()-1 ; i > -1; i--) {
-        if (toRemove[i] < m_plane.m_bullets.size()) {
-            m_plane.m_bullets.erase(m_plane.m_bullets.begin() + toRemove[i]);
+    // Remove the bullets that have collided and are not alive anymore
+    for (int i= m_plane.m_bullets.size() - 1 ; i > -1 ; i--) {
+        if (!m_plane.m_bullets[i]->IsAlive()) {
+            m_plane.m_bullets.erase(m_plane.m_bullets.begin() + i);
         }
     }
-
-    for (int i=0; i < m_objects.size() ; i++) {
+    // Remove the enemies from the list that have collided with bullets and are not alive anymore
+    for (int i= m_objects.size() - 1; i > -1 ; i--) {
         if (!m_objects[i]->IsAlive()) {
             m_objects.erase(m_objects.begin() + i);
         }
@@ -53,6 +51,8 @@ void GameState::Render(sf::RenderWindow& l_window) {
     // m_grid.Render(l_window);
     m_plane.Render(l_window);
     m_scoreboard.Render(l_window);
+    // Render the enemies
+    // Rendering them here assures us that they are rendered only once
     for (int i = 0; i < m_objects.size() ; i++) {
         if (m_objects[i]->IsAlive()) {
             m_objects[i]->Render(l_window);
